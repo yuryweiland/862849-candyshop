@@ -29,7 +29,6 @@ var BASKET_GOODS = 3;
 
 // Находим шаблон, который будем копировать
 var goodElements = document.querySelector('#card').content.querySelector('.catalog__card');
-var cardElements = document.querySelector('#card-order').content.querySelector('.goods_card');
 
 var goodsCards = document.querySelector('.goods__cards');
 var goodsCardEmpty = document.querySelector('.goods__card-empty');
@@ -134,7 +133,7 @@ function renderGood(good) {
 }
 
 // Создаём массив товаров каталога
-var loadedGoods = function() {
+var loadedGoods = function () {
   var goodsArray = [];
 
   for (var i = 0; i < CATALOG_GOODS; i++) {
@@ -144,7 +143,7 @@ var loadedGoods = function() {
 };
 
 // Создаем массив товаров корзины
-var loadedBasket = function() {
+var loadedBasket = function () {
   var basketArray = [];
 
   for (var i = 0; i < BASKET_GOODS; i++) {
@@ -159,31 +158,16 @@ function showGoods() {
   var catalogFragment = document.createDocumentFragment();
   var goodsFragment = document.createDocumentFragment();
 
-  loadedGoods().forEach(function(item){
+  loadedGoods().forEach(function (item) {
     catalogFragment.appendChild(renderGood(item));
   });
 
-  loadedBasket().forEach(function(item){
+  loadedBasket().forEach(function (item) {
     goodsFragment.appendChild(renderGood(item));
   });
 
   catalogCards.appendChild(catalogFragment);
   goodsCards.appendChild(goodsFragment);
-}
-
-function addElementsCard(good) {
-  var cardElement = cardElements.cloneNode(true);
-
-  var cardOrderTitle = cardElement.querySelector('.card-order__title');
-  cardOrderTitle.textContent = good.name;
-
-  var cardOrderImg = cardElement.querySelector('.card-order__img');
-  cardOrderImg.src = good.picture;
-
-  var cardOrderPrice = cardElement.querySelector('.card-order__price');
-  cardOrderPrice.innerHTML = good.price + '&nbsp;₽';
-
-  return cardElement;
 }
 
 // Показываем товары на странице

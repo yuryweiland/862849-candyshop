@@ -133,15 +133,45 @@ function renderGood(good) {
   return goodElement;
 }
 
-// Функция отображения товаров на странице
-function showGoods(callback, catalog, length) {
-  var fragment = document.createDocumentFragment();
+// Создаём массив товаров каталога
+var loadedGoods = function() {
+  var goodsArray = [];
 
-  for (var i = 0; i < length; i++) {
-    fragment.appendChild(callback(generateGoods(i)));
+  for (var i = 0; i < CATALOG_GOODS; i++) {
+    goodsArray.push(generateGoods(i));
+  }
+  return goodsArray;
+};
+
+// Создаем массив товаров корзины
+var loadedBasket = function() {
+  var basketArray = [];
+
+  for (var i = 0; i < BASKET_GOODS; i++) {
+    basketArray.push(generateGoods(i));
   }
 
-  catalog.appendChild(fragment);
+  return basketArray;
+};
+
+console.log(loadedGoods());
+console.log(loadedBasket());
+
+// Функция отображения товаров на странице
+function showGoods() {
+  var catalogFragment = document.createDocumentFragment();
+  var goodsFragment = document.createDocumentFragment();
+
+  for (var i = 0; i < CATALOG_GOODS; i++) {
+    catalogFragment.appendChild(renderGood(loadedGoods()[i]));
+  }
+
+  for (var j = 0; j < BASKET_GOODS; j++) {
+    goodsFragment.appendChild(addElementsCard(loadedBasket()[i]));
+  }
+
+  catalogCards.appendChild(catalogFragment);
+  goodsCards.appendChild(goodsFragment);
 }
 
 function addElementsCard(good) {
@@ -160,8 +190,7 @@ function addElementsCard(good) {
 }
 
 // Показываем товары на странице
-showGoods(renderGood, catalogCards, CATALOG_GOODS);
-showGoods(addElementsCard, goodsCards, BASKET_GOODS);
+showGoods();
 
 removeCatalogCardsLoad();
 removeGoodCardsLoad();

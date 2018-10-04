@@ -154,21 +154,18 @@ var loadedBasket = function() {
   return basketArray;
 };
 
-console.log(loadedGoods());
-console.log(loadedBasket());
-
 // Функция отображения товаров на странице
 function showGoods() {
   var catalogFragment = document.createDocumentFragment();
   var goodsFragment = document.createDocumentFragment();
 
-  for (var i = 0; i < CATALOG_GOODS; i++) {
-    catalogFragment.appendChild(renderGood(loadedGoods()[i]));
-  }
+  loadedGoods().forEach(function(item){
+    catalogFragment.appendChild(renderGood(item));
+  });
 
-  for (var j = 0; j < BASKET_GOODS; j++) {
-    goodsFragment.appendChild(addElementsCard(loadedBasket()[i]));
-  }
+  loadedBasket().forEach(function(item){
+    goodsFragment.appendChild(renderGood(item));
+  });
 
   catalogCards.appendChild(catalogFragment);
   goodsCards.appendChild(goodsFragment);

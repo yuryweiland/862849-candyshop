@@ -24,14 +24,23 @@ var RATING_ARRAY = {
   5: 'stars__rating--five'
 };
 
-var catalogGoods = 26;
-var basketGoods = 3;
+var CATALOG_GOODS = 26;
+var BASKET_GOODS = 3;
+
+// Находим шаблон, который будем копировать
+var goodElements = document.querySelector('#card').content.querySelector('.catalog__card');
+var cardElements = document.querySelector('#card-order').content.querySelector('.goods_card');
+
+var goodsCards = document.querySelector('.goods__cards');
+var goodsCardEmpty = document.querySelector('.goods__card-empty');
+var catalogCards = document.querySelector('.catalog__cards');
+var catalogLoad = document.querySelector('.catalog__load');
 
 // Генерируем строку ингридиентов
 function generateString() {
   var composition = '';
 
-  for (var j = 0; j < Math.floor(Math.random() * CONTENTS_GOODS.length); j++) {
+  for (var i = 0; i < Math.floor(randomMath(CONTENTS_GOODS.length)); i++) {
     composition += CONTENTS_GOODS[Math.floor(Math.random() * CONTENTS_GOODS.length)] + ', '; // Генерируем строку списка ингридиентов
   }
 
@@ -45,10 +54,12 @@ function randomMath(length, start) {
 }
 
 // Генерируем 26 объектов описания товара
-function generateGoods(i) {
+function generateGoods() {
+  var INDEX = randomMath(CATALOG_GOODS, 1);
+
   return {
-    name: NAME_GOODS[i], // Название товара
-    picture: 'img/cards/' + PICTURE_GOODS[i] + '.jpg', // Адрес изображения товара
+    name: NAME_GOODS[INDEX], // Название товара
+    picture: 'img/cards/' + PICTURE_GOODS[INDEX] + '.jpg', // Адрес изображения товара
     amount: randomMath(20), // Количество
     price: randomMath(1400, 100), // Стоимость
     weight: randomMath(270, 30), // Вес
@@ -64,16 +75,17 @@ function generateGoods(i) {
   };
 }
 
-// Уберите у блока catalog__cards класс catalog__cards--load
-var catalogCards = document.querySelector('.catalog__cards');
-catalogCards.classList.remove('catalog__cards--load');
+// Убираем у блока catalog__cards класс catalog__cards--load
+function removeCatalogCardsLoad() {
+  catalogCards.classList.remove('catalog__cards--load');
+  catalogLoad.classList.add('visually-hidden');
+}
 
-// Добавлением класса visually-hidden блок catalog__load
-var catalogLoad = document.querySelector('.catalog__load');
-catalogLoad.classList.add('visually-hidden');
-
-// Находим шаблон, который будем копировать
-var goodElements = document.querySelector('#card').content.querySelector('.catalog__card');
+// Убираем у блока goods__cards класс catalog__cards--load
+function removeGoodCardsLoad() {
+  goodsCards.classList.remove('goods__cards--empty');
+  goodsCardEmpty.classList.add('visually-hidden');
+}
 
 // Есть ли сахар
 function isSugar(goodElement, good) {
@@ -132,11 +144,6 @@ function showGoods(callback, catalog, length) {
   catalog.appendChild(fragment);
 }
 
-var cardElements = document.querySelector('#card-order').content.querySelector('.goods_card');
-
-var goodsCards = document.querySelector('.goods__cards');
-var goodsCardEmpty = document.querySelector('.goods__card-empty');
-
 function addElementsCard(good) {
   var cardElement = cardElements.cloneNode(true);
 
@@ -152,9 +159,9 @@ function addElementsCard(good) {
   return cardElement;
 }
 
-goodsCards.classList.remove('goods__cards--empty');
-goodsCardEmpty.classList.add('visually-hidden');
-
 // Показываем товары на странице
-showGoods(renderGood, catalogCards, catalogGoods);
-showGoods(addElementsCard, goodsCards, basketGoods);
+showGoods(renderGood, catalogCards, CATALOG_GOODS);
+showGoods(addElementsCard, goodsCards, BASKET_GOODS);
+
+removeCatalogCardsLoad();
+removeGoodCardsLoad();

@@ -149,7 +149,7 @@ function renderGood(good) {
     goodsCardEmpty.classList.add('visually-hidden');
 
     // Клонируем товар
-    var goodCard = JSON.parse(JSON.stringify(good));
+    var goodCard = Object.assign({}, good);
 
     // Если количество больше 0, то добавляем товар в корзину
     if (good.amount > 0) {

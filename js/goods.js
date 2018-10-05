@@ -25,15 +25,29 @@ var RATING_ARRAY = {
 };
 
 var CATALOG_GOODS = 26;
-var BASKET_GOODS = 3;
+
+// Товары в корзине (по-умолчанию пустой массив)
+var basketCards = [];
+
+// Создаём массив товаров каталога
+var loadedGoods = function () {
+  var goodsArray = [];
+
+  for (var i = 0; i < CATALOG_GOODS; i++) {
+    goodsArray.push(generateGoods(i));
+  }
+  return goodsArray;
+};
 
 // Находим шаблон, который будем копировать
 var goodElements = document.querySelector('#card').content.querySelector('.catalog__card');
+var cardElements = document.querySelector('#card-order').content.querySelector('.goods_card');
 
 var goodsCards = document.querySelector('.goods__cards');
 var goodsCardEmpty = document.querySelector('.goods__card-empty');
 var catalogCards = document.querySelector('.catalog__cards');
 var catalogLoad = document.querySelector('.catalog__load');
+var cardWidget = document.querySelector('.main-header__basket');
 
 // Генерируем строку ингридиентов
 function generateString() {
@@ -80,12 +94,6 @@ function removeCatalogCardsLoad() {
   catalogLoad.classList.add('visually-hidden');
 }
 
-// Убираем у блока goods__cards класс catalog__cards--load
-function removeGoodCardsLoad() {
-  goodsCards.classList.remove('goods__cards--empty');
-  goodsCardEmpty.classList.add('visually-hidden');
-}
-
 // Есть ли сахар
 function isSugar(goodElement, good) {
   // Характеристики сахара и состав
@@ -129,29 +137,74 @@ function renderGood(good) {
 
   isSugar(goodElement, good);
 
+  var cardBtnFavorite = goodElement.querySelector('.card__btn-favorite');
+  cardBtnFavorite.addEventListener('click', clickBtnFavoriteHandler);
+
+  var cardBtn = goodElement.querySelector('.card__btn');
+  cardBtn.addEventListener('click', clickAddToCardHandler);
+
+  // Функция добавления товара в корзину
+  function clickAddToCardHandler() {
+    goodsCards.classList.remove('goods__cards--empty');
+    goodsCardEmpty.classList.add('visually-hidden');
+
+    // Клонируем товар
+    var goodCard = JSON.parse(JSON.stringify(good));
+
+    // Если количество больше 0, то добавляем товар в корзину
+    if (good.amount > 0) {
+
+      // Если товар уже содержится в корзине, увеличиваем количество товара
+      if (contains(basketCards, goodCard)) {
+        addGoodAmount(basketCards, goodCard);
+      } else {
+        goodCard.orderedAmount = 1;
+        delete goodCard.amount;
+        basketCards.push(goodCard);
+      }
+
+      // Отображаем текущее кол-во товаров в корзине
+      cardWidget.textContent = getCountBasket(basketCards);
+
+      // Уменьшаем на 1 кол-во товара в наличии при добавлении товара в корзину
+      good.amount--;
+    }
+    showBasket(basketCards, goodsCards, addElementsCard);
+  }
+
   return goodElement;
 }
 
-// Создаём массив товаров каталога
-var loadedGoods = function () {
-  var goodsArray = [];
+// Гененируем шаблоны для товаров в корзине
+function addElementsCard(good) {
+  var cardElement = cardElements.cloneNode(true);
+  var cardOrderTitle = cardElement.querySelector('.card-order__title');
+  cardOrderTitle.textContent = good.name;
+  var cardOrderImg = cardElement.querySelector('.card-order__img');
+  cardOrderImg.src = good.picture;
+  var cardOrderPrice = cardElement.querySelector('.card-order__price');
+  cardOrderPrice.textContent = good.price + ' ₽';
+  var cardOrderCount = cardElement.querySelector('.card-order__count');
+  cardOrderCount.value = good.orderedAmount;
 
-  for (var i = 0; i < CATALOG_GOODS; i++) {
-    goodsArray.push(generateGoods(i));
+  //  Функция удаления товара в магазине
+  var btnClose = cardElement.querySelector('.card-order__close');
+  btnClose.addEventListener('click', btnCloseClickHandler);
+
+  var goodCards = document.querySelector('.goods__cards');
+
+  function btnCloseClickHandler() {
+    deleteGood(basketCards, good, goodCards, cardElement);
   }
-  return goodsArray;
-};
 
-// Создаем массив товаров корзины
-var loadedBasket = function () {
-  var basketArray = [];
+  return cardElement;
+}
 
-  for (var i = 0; i < BASKET_GOODS; i++) {
-    basketArray.push(generateGoods(i));
-  }
-
-  return basketArray;
-};
+// Добавляем/убираем css-класс при клике на "Добавить в Избранное"
+function clickBtnFavoriteHandler(evt) {
+  var cardFavoriteElement = evt.currentTarget;
+  cardFavoriteElement.classList.toggle('card__btn-favorite--selected');
+}
 
 // Функция отображения товаров на странице
 function showGoods() {
@@ -162,16 +215,100 @@ function showGoods() {
     catalogFragment.appendChild(renderGood(item));
   });
 
-  loadedBasket().forEach(function (item) {
-    goodsFragment.appendChild(renderGood(item));
-  });
-
   catalogCards.appendChild(catalogFragment);
   goodsCards.appendChild(goodsFragment);
+
+  isEmptyHeaderBasket();
+  isEmptyBasket();
+  removeCatalogCardsLoad();
+}
+
+// Удалить товар из корзины
+function deleteGood(basket, good, goodCards, cardElement) {
+  for (var m = 0; m < basket.length; m++) {
+    if (basket[m].name === good.name) {
+
+      // Убираем товар из массива корзины
+      basket.splice(m, 1);
+
+      goodCards.removeChild(cardElement);
+
+      // Убираем количество товара в корзине
+      cardWidget.textContent -= good.orderedAmount;
+
+      // Прибавляем элементу количество
+      // good.amount += good.orderedAmount;
+      isEmptyHeaderBasket();
+      isEmptyBasket();
+    }
+  }
+}
+
+// Если количество товара равно нулю
+function isEmptyHeaderBasket() {
+  if (parseInt(cardWidget.textContent, 10) === 0) {
+    cardWidget.textContent = 'В корзине ничего нет';
+  }
+}
+
+// Проверка, пуста ли корзина
+function isEmptyBasket() {
+
+  if (basketCards.length === 0) {
+    goodsCards.classList.add('goods__cards--empty');
+    goodsCards.appendChild(goodsCardEmpty);
+    goodsCardEmpty.classList.remove('visually-hidden');
+
+  } else if (basketCards.length > 0) {
+    goodsCards.classList.remove('goods__cards--empty');
+    goodsCardEmpty.classList.add('visually-hidden');
+  }
+}
+
+// Добавляем количество товара в header
+function getCountBasket(basket) {
+  var basketCountOrder = 0;
+  for (var m = 0; m < basket.length; m++) {
+    basketCountOrder += basket[m].orderedAmount;
+  }
+  return basketCountOrder;
+}
+
+// Прибавляем единицу, если этот товар уже есть в корзине
+function addGoodAmount(basket, goodCard) {
+  for (var m = 0; m < basket.length; m++) {
+    if (basket[m].name === goodCard.name) {
+      basket[m].orderedAmount++;
+    }
+  }
+}
+
+// Функция отображения товара в корзине
+function showBasket(basket, catalog, callback) {
+  cleanBasket();
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < basket.length; i++) {
+    fragment.appendChild(callback(basket[i]));
+  }
+  catalog.appendChild(fragment);
+}
+
+// Очищаем корзину перед следующим ренедером
+function cleanBasket() {
+  while (goodsCards.firstChild) {
+    goodsCards.removeChild(goodsCards.firstChild);
+  }
+}
+
+// Проверяем есть ли товар в корзине
+function contains(basket, goodCard) {
+  for (var m = 0; m < basket.length; m++) {
+    if (basket[m].name === goodCard.name) {
+      return true;
+    }
+  }
+  return false;
 }
 
 // Показываем товары на странице
 showGoods();
-
-removeCatalogCardsLoad();
-removeGoodCardsLoad();

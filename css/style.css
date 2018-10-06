@@ -675,10 +675,8 @@ body {
 .goods__title {
   margin-bottom: 50px;
 }
-
 .goods__card-wrap {
   display: flex;
-  width: 100%;
   flex-direction: column;
 }
 .goods__cards {
@@ -778,6 +776,7 @@ body {
   position: absolute;
   top: 15px;
   left: 22px;
+  width: 200px;
   margin: 0;
   font-size: 24px;
   line-height: 30px;
@@ -965,7 +964,7 @@ body {
   margin: 0;
   margin-bottom: 30px;
 }
-.payment__card-wrap {
+.payment__card {
   display: flex;
   justify-content: space-between;
 }
@@ -1175,7 +1174,7 @@ body {
   border-color: #6e58d9;
   background-color: #6e58d9;
   transition: background-color 0.2s ease;
- }
+}
 .main-footer__social-link:focus {
   border-color: #8269ff;
   background-color: #8269ff;
@@ -1195,8 +1194,8 @@ body {
   background-image: url("../img/facebook-white.png");
 }
 .main-footer__social-link--inst {
-   background-image: url("../img/inst-blue.png");
- }
+  background-image: url("../img/inst-blue.png");
+}
 .main-footer__social-link--inst:hover,
 .main-footer__social-link--inst:focus {
   background-image: url("../img/inst-white.png");
@@ -1355,4 +1354,3 @@ body {
 .modal__message {
   padding-bottom: 0;
 }
-

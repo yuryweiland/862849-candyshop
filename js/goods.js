@@ -224,8 +224,6 @@ function checkoutFormClickHandler(evt) {
 
   var tabId = target.getAttribute('id');
 
-  console.log(tabId);
-
   if (tabId === 'payment__card') {
     document.querySelector('.' + tabId).classList.remove('visually-hidden');
     paymentCash.classList.add('visually-hidden');

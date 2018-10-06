@@ -292,11 +292,11 @@ function setRequiredInputs(el, bool) {
 
   if (bool) {
     blockInputs.forEach(function (input, index) {
-      blockInputs[index].setAttribute("required", "");
+      blockInputs[index].setAttribute('required', '');
     });
   } else {
     blockInputs.forEach(function (input, index) {
-      blockInputs[index].removeAttribute("required");
+      blockInputs[index].removeAttribute('required');
     });
   }
 }
@@ -550,15 +550,14 @@ function checkPaymentCard(num) {
   });
   // Суммируем каждый элемент друг с другом
 
-  if (newArrNumber.length) {
-    var result = newArrNumber.reduce(function (previous, current) {
-      return previous + current;
-    });
+  var result = newArrNumber.reduce(function (previous, current) {
+    return previous + current;
+  });
 
-    // Если результат больше 10 и кратен 10 то возвращаем истину
-    return !!(result >= 10 && result % 10 === 0);
-  }
+  // Если результат больше 10 и кратен 10 то возвращаем истину
+  return !!(result >= 10 && result % 10 === 0);
 }
+
 // События
 var MESSAGE_ERRORS = {
   contactDataName: {
@@ -651,37 +650,7 @@ var deliverHouse = form.querySelector('#deliver_house');
 var deliverFloor = form.querySelector('#deliver__floor');
 var deliverRoom = form.querySelector('#deliver__room');
 
-// if (selectedPaymentMethod === 'payment__card') {
-//   paymentCardNumber.setAttribute("required", "");
-//   paymentCardDate.setAttribute("required", "");
-//   paymentCardCVC.setAttribute("required", "");
-//   paymentCardholder.setAttribute("required", "");
-//
-// } else if (selectedPaymentMethod === 'payment__cash') {
-//   paymentCardNumber.removeAttribute("required");
-//   paymentCardDate.removeAttribute("required");
-//   paymentCardCVC.removeAttribute("required");
-//   paymentCardholder.removeAttribute("required");
-// }
-//
-// if (deliverStreet && selectedDeliverMethod === 'deliver__courier') {
-//   deliverStreet.setAttribute("required", "");
-//   deliverHouse.setAttribute("required", "");
-//   deliverFloor.setAttribute("required", "");
-// } else if (deliverStreet && selectedDeliverMethod === 'deliver__store') {
-//   deliverStreet.removeAttribute("required");
-//   deliverHouse.removeAttribute("required");
-//   deliverFloor.removeAttribute("required");
-// }
-
-console.log(selectedDeliverMethod);
-console.log(selectedPaymentMethod);
-
 form.addEventListener('change', function (evt) {
-
-  console.log(selectedDeliverMethod);
-  console.log(selectedPaymentMethod);
-
   var target = evt.target;
   if (contactDataName === target) {
     getCustomErrors(contactDataName, MESSAGE_ERRORS['contactDataName']);

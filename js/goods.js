@@ -12,13 +12,13 @@ var PICTURE_GOODS = ['gum-cedar', 'gum-chile', 'gum-eggplant', 'gum-mustard', 'g
   'marshmallow-bacon', 'marshmallow-beer', 'marshmallow-shrimp', 'marshmallow-spicy', 'marshmallow-wine', 'soda-bacon', 'soda-celery', 'soda-cob', 'soda-garlic', 'soda-peanut-grapes', 'soda-russian'];
 
 // Рейтинг
-var RATING_ARRAY = {
-  1: 'stars__rating--one',
-  2: 'stars__rating--two',
-  3: 'stars__rating--three',
-  4: 'stars__rating--four',
-  5: 'stars__rating--five'
-};
+var RATING_ARRAY = [
+  'stars__rating--one',
+  'stars__rating--two',
+  'stars__rating--three',
+  'stars__rating--four',
+  'stars__rating--five'
+];
 
 var CATALOG_GOODS = 26;
 
@@ -125,7 +125,7 @@ function renderGood(good) {
   // Добавляем класс рейтинга в зависимоти от значения
   var starsRating = goodElement.querySelector('.stars__rating');
   starsRating.classList.remove('stars__rating--five');
-  starsRating.classList.add(RATING_ARRAY[good.rating.value]);
+  starsRating.classList.add(RATING_ARRAY[good.rating.value + 1]);
 
   // Рейтинг
   var starCount = goodElement.querySelector('.star__count');
@@ -146,6 +146,7 @@ function renderGood(good) {
 
     // Клонируем товар
     var goodCard = Object.assign({}, good);
+    var sum = 0;
 
     // Если количество больше 0, то добавляем товар в корзину
     if (good.amount > 0) {
@@ -159,8 +160,12 @@ function renderGood(good) {
         basketCards.push(goodCard);
       }
 
+      basketCards.forEach(function(card) {
+        sum = sum + card.price;
+      });
+
       // Отображаем текущее кол-во товаров в корзине
-      cardWidget.textContent = getCountBasket(basketCards);
+      updateCartWidgetText(sum);
 
       // Уменьшаем на 1 кол-во товара в наличии при добавлении товара в корзину
       good.amount--;
@@ -194,6 +199,11 @@ function addElementsCard(good) {
   }
 
   return cardElement;
+}
+
+// Обновление текста в виджете корзины (в шапке сайта)
+function updateCartWidgetText(sum) {
+  cardWidget.textContent = getCountBasket(basketCards) > 0 ? 'В корзине ' + getCountBasket(basketCards) + ' товара на ' + sum + '₽' : 'В корзине ничего нет';
 }
 
 // Добавляем/убираем css-класс при клике на "Добавить в Избранное"
@@ -376,23 +386,29 @@ function showGoods() {
 
 // Удалить товар из корзины
 function deleteGood(basket, good, goodCards, cardElement) {
-  for (var m = 0; m < basket.length; m++) {
-    if (basket[m].name === good.name) {
+  var sum = 0;
+
+  basket.forEach(function(item, index) {
+    if (basket[index].name === good.name) {
 
       // Убираем товар из массива корзины
-      basket.splice(m, 1);
+      basket.splice(index, 1);
 
       goodCards.removeChild(cardElement);
 
-      // Убираем количество товара в корзине
-      cardWidget.textContent -= good.orderedAmount;
+      // Обновляем количество и сумму товаров в корзине
+      basket.forEach(function(item) {
+        sum = sum + item.price;
+      });
+
+      updateCartWidgetText(sum);
 
       // Прибавляем элементу количество
       // good.amount += good.orderedAmount;
       isEmptyHeaderBasket();
       isEmptyBasket();
     }
-  }
+  });
 }
 
 // Если количество товара равно нулю
@@ -419,17 +435,17 @@ function isEmptyBasket() {
 // Добавляем количество товара в header
 function getCountBasket(basket) {
   var basketCountOrder = 0;
-  for (var m = 0; m < basket.length; m++) {
-    basketCountOrder += basket[m].orderedAmount;
+  for (var i = 0; i < basket.length; i++) {
+    basketCountOrder += basket[i].orderedAmount;
   }
   return basketCountOrder;
 }
 
 // Прибавляем единицу, если этот товар уже есть в корзине
 function addGoodAmount(basket, goodCard) {
-  for (var m = 0; m < basket.length; m++) {
-    if (basket[m].name === goodCard.name) {
-      basket[m].orderedAmount++;
+  for (var i = 0; i < basket.length; i++) {
+    if (basket[i].name === goodCard.name) {
+      basket[i].orderedAmount++;
     }
   }
 }
@@ -453,8 +469,8 @@ function cleanBasket() {
 
 // Проверяем есть ли товар в корзине
 function contains(basket, goodCard) {
-  for (var m = 0; m < basket.length; m++) {
-    if (basket[m].name === goodCard.name) {
+  for (var i = 0; i < basket.length; i++) {
+    if (basket[i].name === goodCard.name) {
       return true;
     }
   }

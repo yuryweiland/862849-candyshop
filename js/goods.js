@@ -160,7 +160,7 @@ function renderGood(good) {
         basketCards.push(goodCard);
       }
 
-      basketCards.forEach(function(card) {
+      basketCards.forEach(function (card) {
         sum = sum + card.price;
       });
 
@@ -388,7 +388,7 @@ function showGoods() {
 function deleteGood(basket, good, goodCards, cardElement) {
   var sum = 0;
 
-  basket.forEach(function(item, index) {
+  basket.forEach(function (basketItem, index) {
     if (basket[index].name === good.name) {
 
       // Убираем товар из массива корзины
@@ -397,7 +397,7 @@ function deleteGood(basket, good, goodCards, cardElement) {
       goodCards.removeChild(cardElement);
 
       // Обновляем количество и сумму товаров в корзине
-      basket.forEach(function(item) {
+      basket.forEach(function (item) {
         sum = sum + item.price;
       });
 

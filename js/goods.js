@@ -212,7 +212,24 @@ function addElementsCard(good) {
 
 // Обновление текста в виджете корзины (в шапке сайта)
 function updateCartWidgetText(sum) {
-  cardWidget.textContent = getCountBasket(basketCards) > 0 ? 'В корзине ' + getCountBasket(basketCards) + ' товара на ' + sum + '₽' : 'В корзине ничего нет';
+  var count = getCountBasket(basketCards);
+
+  // Склоняем слово "товар" в блоке корзины в зависимости от количества товаров
+  var wordCase = '';
+
+  if (count === 1 && count < 10) {
+    wordCase = 'товар';
+  } else if (count <= 5) {
+    wordCase = 'товара';
+  } else if (count > 20 && count % 10 === 1) {
+    wordCase = 'товар';
+  } else if (count > 20 && count % 10 >= 2 && count % 10 <= 4) {
+    wordCase = 'товара';
+  } else {
+    wordCase = 'товаров';
+  }
+
+  cardWidget.textContent = getCountBasket(basketCards) > 0 ? 'В корзине ' + count + ' ' + wordCase + ' на ' + sum + '₽' : 'В корзине ничего нет';
 }
 
 // Добавляем/убираем css-класс при клике на "Добавить в Избранное"
@@ -622,6 +639,7 @@ var MESSAGE_ERRORS = {
     valueMissing: 'Обязательное поле'
   }
 };
+
 function getCustomErrors(el, obj) {
   if (el.validity.tooShort) {
     el.setCustomValidity(obj.tooShort);
@@ -637,6 +655,7 @@ function getCustomErrors(el, obj) {
     el.setCustomValidity('');
   }
 }
+
 // Обработчик событий на форме
 var form = document.querySelector('form:nth-child(2)');
 var contactDataName = form.querySelector('#contact-data__name');
@@ -691,6 +710,7 @@ function inputKeyupHandler(evt) {
     }
   }
 }
+
 paymentCardDate.addEventListener('keyup', inputKeyupHandler);
 form.addEventListener('change', dataValiditySubmitHandler);
 var paymentCardStatus = document.querySelector('.payment__card-status');

@@ -334,6 +334,10 @@ var MIN = 0;
 var MAX = 245;
 var ELEMENT_WIDTH = 240;
 
+/**
+ * module5-task1 - start
+ */
+
 // Координаты слайдера
 var sliderLineCoords = getCoords(sliderLine);
 rangeMin.addEventListener('mousedown', rangeMinMouseDownHandler);
@@ -418,6 +422,9 @@ function getCoords(elem) {
     left: elCoords.left + pageXOffset
   };
 }
+/**
+ * module5-task1 - end
+ */
 
 /**
  * Основная функция для отображения данных - showGoods()

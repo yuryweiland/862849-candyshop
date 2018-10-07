@@ -117,6 +117,7 @@ body {
 }
 .input-btn__label--radio:hover::before {
   background-image: url("../img/circle-gray.png");
+  background-size: cover;
   opacity: 1;
   transition: opacity 0.2s ease;
 }
@@ -607,6 +608,7 @@ body {
   font-size: 0;
   width: 40px;
   height: 40px;
+  cursor: pointer;
   background-color: #e8e8e8;
   background-image: url("../img/flash.svg");
   background-size: 20px;
@@ -638,6 +640,7 @@ body {
   font-weight: bold;
   text-decoration: none;
   background-color: #ffdd21;
+  cursor: pointer;
 }
 .card--in-stock .card__btn:hover {
   background-color: #82da03;
@@ -657,6 +660,7 @@ body {
 }
 .card--soon .card__btn {
   background-color: #e8e8e8;
+  cursor: default;
 }
 .card--in-stock:hover .card__main {
   box-shadow: 0 8px 18px 0 rgba(130, 218, 3, 0.3);
@@ -750,6 +754,7 @@ body {
 }
 .card-order__close {
   position: absolute;
+  cursor: pointer;
   z-index: 1;
   right: 16px;
   top: 20px;
@@ -770,6 +775,8 @@ body {
   background-color: #ffdd21;
   width: 265px;
   height: 200px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   box-shadow: 0 5px 8px 0 #e8e8e8;
 }
 .card-order__img {
@@ -777,6 +784,8 @@ body {
   height: 200px;
   object-fit: cover;
   object-position: 0 -7px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 .card-order__title {
   position: absolute;
@@ -790,8 +799,6 @@ body {
 }
 .card-order__main {
   display: flex;
-  margin-left: 6px;
-  margin-right: 6px;
   justify-content: space-between;
   padding: 25px 16px;
   border: 2px solid #e8e8e8;
@@ -816,6 +823,7 @@ body {
   font-size: 0;
   width: 10px;
   height: 18px;
+  cursor: pointer;
   background-repeat: no-repeat;
   background-color: transparent;
   border: 0;

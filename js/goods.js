@@ -24,6 +24,8 @@ var CATALOG_GOODS = 26;
 
 // Товары в корзине (по-умолчанию пустой массив)
 var basketCards = [];
+var selectedPaymentMethod = 'payment__card';
+var selectedDeliverMethod = 'deliver__store';
 
 // Создаём массив товаров каталога
 var loadedGoods = function () {
@@ -44,6 +46,13 @@ var goodsCardEmpty = document.querySelector('.goods__card-empty');
 var catalogCards = document.querySelector('.catalog__cards');
 var catalogLoad = document.querySelector('.catalog__load');
 var cardWidget = document.querySelector('.main-header__basket');
+
+var paymentCard = document.querySelector('.payment__card');
+var paymentCash = document.querySelector('.payment__cash');
+var deliverStore = document.querySelector('.deliver__store');
+var deliverCourier = document.querySelector('.deliver__courier');
+
+var orderButton = document.querySelector('.buy__submit-btn');
 
 // Генерируем строку ингридиентов
 function generateString() {
@@ -203,7 +212,24 @@ function addElementsCard(good) {
 
 // Обновление текста в виджете корзины (в шапке сайта)
 function updateCartWidgetText(sum) {
-  cardWidget.textContent = getCountBasket(basketCards) > 0 ? 'В корзине ' + getCountBasket(basketCards) + ' товара на ' + sum + '₽' : 'В корзине ничего нет';
+  var count = getCountBasket(basketCards);
+
+  // Склоняем слово "товар" в блоке корзины в зависимости от количества товаров
+  var wordCase = '';
+
+  if (count === 1 && count < 10) {
+    wordCase = 'товар';
+  } else if (count <= 5) {
+    wordCase = 'товара';
+  } else if (count > 20 && count % 10 === 1) {
+    wordCase = 'товар';
+  } else if (count > 20 && count % 10 >= 2 && count % 10 <= 4) {
+    wordCase = 'товара';
+  } else {
+    wordCase = 'товаров';
+  }
+
+  cardWidget.textContent = getCountBasket(basketCards) > 0 ? 'В корзине ' + count + ' ' + wordCase + ' на ' + sum + '₽' : 'В корзине ничего нет';
 }
 
 // Добавляем/убираем css-класс при клике на "Добавить в Избранное"
@@ -213,54 +239,82 @@ function clickBtnFavoriteHandler(evt) {
 }
 
 // Переключение вкладок в форме оформления заказа
-var deliver = document.querySelector('.deliver');
-deliver.addEventListener('click', checkoutFormClickHandler);
-
 var payment = document.querySelector('.payment__inner');
-payment.addEventListener('click', checkoutFormClickHandler);
+payment.addEventListener('click', paymentFormClickHandler);
 
-// Обработчик клика по вкладкам в блоках "Оплата" и "Доставка"
-function checkoutFormClickHandler(evt) {
+var deliver = document.querySelector('.deliver');
+deliver.addEventListener('click', deliverFormClickHandler);
+
+// Обработчик клика по вкладкам в блоке "Оплата"
+function paymentFormClickHandler(evt) {
   var target = evt.target;
-  var deliverStore = document.querySelector('.deliver__store');
-  var deliverCourier = document.querySelector('.deliver__courier');
-  var paymentCard = document.querySelector('.payment__card');
-  var paymentCash = document.querySelector('.payment__cash');
-
   var inputClass = target.closest('.toggle-btn__input');
   if (!inputClass) {
     return;
   }
 
-  var tabId = target.getAttribute('id');
+  selectedPaymentMethod = target.getAttribute('id');
 
-  if (tabId === 'payment__card') {
-    document.querySelector('.' + tabId).classList.remove('visually-hidden');
+  if (selectedPaymentMethod === 'payment__card') {
+    document.querySelector('.' + selectedPaymentMethod).classList.remove('visually-hidden');
     paymentCash.classList.add('visually-hidden');
-    disabledInput(paymentCard, true);
+    setDisabledInputs(paymentCard, false);
+    setRequiredInputs(paymentCard, true);
 
-  } else if (tabId === 'payment__cash') {
-    document.querySelector('.' + tabId).classList.remove('visually-hidden');
+  } else if (selectedPaymentMethod === 'payment__cash') {
+    document.querySelector('.' + selectedPaymentMethod).classList.remove('visually-hidden');
     paymentCard.classList.add('visually-hidden');
-    disabledInput(paymentCash, false);
+    setDisabledInputs(paymentCard, true);
+  }
+}
 
-  } else if (tabId === 'deliver__store') {
-    document.querySelector('.' + tabId).classList.remove('visually-hidden');
+// Обработчик клика по вкладкам в блоке "Доставка"
+function deliverFormClickHandler(evt) {
+  var target = evt.target;
+  var inputClass = target.closest('.toggle-btn__input');
+  if (!inputClass) {
+    return;
+  }
+
+  selectedDeliverMethod = target.getAttribute('id');
+
+  if (selectedDeliverMethod === 'deliver__store') {
+    document.querySelector('.' + selectedDeliverMethod).classList.remove('visually-hidden');
     deliverCourier.classList.add('visually-hidden');
-    disabledInput(deliverCourier, true);
+    setDisabledInputs(deliverStore, false);
+    setDisabledInputs(deliverCourier, true);
+    setRequiredInputs(deliverStore, true);
 
-  } else if (tabId === 'deliver__courier') {
-    document.querySelector('.' + tabId).classList.remove('visually-hidden');
+  } else if (selectedDeliverMethod === 'deliver__courier') {
+    document.querySelector('.' + selectedDeliverMethod).classList.remove('visually-hidden');
     deliverStore.classList.add('visually-hidden');
-    disabledInput(deliverCourier, false);
+    setDisabledInputs(deliverStore, true);
+    setDisabledInputs(deliverCourier, false);
+    setRequiredInputs(deliverCourier, true);
   }
 }
 
 // Деактивируем input у скрытых полей формы
-function disabledInput(el, bool) {
-  var allInputBlock = el.querySelectorAll('input');
-  for (var k = 0; k < allInputBlock.length; k++) {
-    allInputBlock[k].disabled = bool;
+function setDisabledInputs(el, bool) {
+  var blockInputs = el.querySelectorAll('input');
+
+  blockInputs.forEach(function (input, index) {
+    blockInputs[index].disabled = bool;
+  });
+}
+
+// Устанавливаем обязательные поля у выбранных вариантов доставки и оплаты
+function setRequiredInputs(el, bool) {
+  var blockInputs = el.querySelectorAll('input');
+
+  if (bool) {
+    blockInputs.forEach(function (input, index) {
+      blockInputs[index].setAttribute('required', '');
+    });
+  } else {
+    blockInputs.forEach(function (input, index) {
+      blockInputs[index].removeAttribute('required');
+    });
   }
 }
 
@@ -379,6 +433,15 @@ function showGoods() {
   catalogCards.appendChild(catalogFragment);
   goodsCards.appendChild(goodsFragment);
 
+  // При запуске сайта устанавливаем состояние полей форм доставки и оплаты
+  setDisabledInputs(paymentCard, false);
+  setDisabledInputs(paymentCash, true);
+  setDisabledInputs(deliverStore, false);
+  setDisabledInputs(deliverCourier, true);
+
+  setRequiredInputs(paymentCard, true);
+  setRequiredInputs(deliverStore, true);
+
   isEmptyHeaderBasket();
   isEmptyBasket();
   removeCatalogCardsLoad();
@@ -420,15 +483,16 @@ function isEmptyHeaderBasket() {
 
 // Проверка, пуста ли корзина
 function isEmptyBasket() {
-
   if (basketCards.length === 0) {
     goodsCards.classList.add('goods__cards--empty');
     goodsCards.appendChild(goodsCardEmpty);
     goodsCardEmpty.classList.remove('visually-hidden');
+    orderButton.classList.add('hidden__opacity');
 
   } else if (basketCards.length > 0) {
     goodsCards.classList.remove('goods__cards--empty');
     goodsCardEmpty.classList.add('visually-hidden');
+    orderButton.classList.remove('hidden__opacity');
   }
 }
 
@@ -438,6 +502,7 @@ function getCountBasket(basket) {
   for (var i = 0; i < basket.length; i++) {
     basketCountOrder += basket[i].orderedAmount;
   }
+
   return basketCountOrder;
 }
 
@@ -457,6 +522,13 @@ function showBasket(basket, catalog, callback) {
   for (var i = 0; i < basket.length; i++) {
     fragment.appendChild(callback(basket[i]));
   }
+
+  if (basket.length > 0) {
+    orderButton.classList.remove('hidden__opacity');
+  } else {
+    orderButton.classList.add('hidden__opacity');
+  }
+
   catalog.appendChild(fragment);
 }
 
@@ -475,6 +547,183 @@ function contains(basket, goodCard) {
     }
   }
   return false;
+}
+
+// Проверка номера банковской карты по алгоритму Луна
+function checkPaymentCard(num) {
+  if (selectedPaymentMethod !== 'payment__card' || num === null && typeof num === 'undefined' && num.trim() === '') {
+    return false;
+  }
+
+  // Разделяет строку на отдельные символы
+  var newArrNumber = num.split('').map(function (element, index) {
+    // Преобразуем каждую строку в число
+    var mapElement = parseInt(element, 10);
+    // Производим операцию с каждым нечётным числом - начинается с 0, значит индексы 0,2,4... - нечётные
+    if (index % 2 === 0) {
+      mapElement = mapElement * 2 > 9 ? (mapElement * 2) - 9 : mapElement * 2;
+    }
+    return mapElement;
+  });
+  // Суммируем каждый элемент друг с другом
+
+  var result = newArrNumber.reduce(function (previous, current) {
+    return previous + current;
+  });
+
+  // Если результат больше 10 и кратен 10 то возвращаем истину
+  return !!(result >= 10 && result % 10 === 0);
+}
+
+// События
+var MESSAGE_ERRORS = {
+  contactDataName: {
+    tooShort: 'Имя должно состоять минимум из 2-х символов',
+    tooLong: 'Имя не должно превышать 25-ти символов',
+    patternMismatch: '',
+    valueMissing: 'Обязательное поле'
+  },
+  contactDataTel: {
+    tooShort: 'Номер телефона должен состоять из 11 цифр',
+    tooLong: 'Номер телефона должен состоять из 11 цифр',
+    patternMismatch: '',
+    valueMissing: 'Обязательное поле'
+  },
+  paymentCardNumber: {
+    tooShort: 'Номер банковской карты должен состоять из 16 цифр',
+    tooLong: 'Номер банковской карты должен состоять из 16 цифр',
+    patternMismatch: 'Номер банковской карты не должен содержать буквы и знаки препинания',
+    customError: 'Данные карты не прошли проверку подлинности',
+    valueMissing: 'Обязательное поле'
+  },
+  paymentCardDate: {
+    tooShort: 'Формат даты должен состоять из 5 символов',
+    tooLong: 'Формат даты должен состоять из 5 символов',
+    patternMismatch: 'Формат даты должен быть мм/ГГ и состоять только из цифр',
+    valueMissing: 'Обязательное поле'
+  },
+  paymentCardCVC: {
+    tooShort: 'Номер CVC должен состоять из трёх цифр',
+    tooLong: 'Номер CVC должен состоять из трёх цифр',
+    patternMismatch: 'Поле CVC содержит только цифры',
+    valueMissing: 'Обязательное поле'
+  },
+  paymentCardholder: {
+    tooShort: 'Имя держателя карты должно состоять минимум из 4-х символов',
+    tooLong: 'Имя держателя карты не должно превышать 50-ти символов',
+    patternMismatch: 'Имя держателя карты должно быть написано латиницей',
+    valueMissing: 'Обязательное поле'
+  },
+  deliverStreet: {
+    tooShort: '',
+    tooLong: 'Название улицы не должно превышать 50-ти символов',
+    patternMismatch: '',
+    valueMissing: 'Обязательное поле'
+  },
+  deliverHouse: {
+    tooShort: '',
+    tooLong: '',
+    patternMismatch: '',
+    valueMissing: 'Обязательное поле'
+  },
+  deliverFloor: {
+    tooShort: '',
+    tooLong: 'Этаж не должен превышать 3-х символов',
+    patternMismatch: 'Поле Этаж содержит только цифры',
+    valueMissing: ''
+  },
+  deliverRoom: {
+    tooShort: '',
+    tooLong: '',
+    patternMismatch: '',
+    valueMissing: 'Обязательное поле'
+  }
+};
+
+function getCustomErrors(el, obj) {
+  if (el.validity.tooShort) {
+    el.setCustomValidity(obj.tooShort);
+  } else if (el.validity.tooLong) {
+    el.setCustomValidity(obj.toLong);
+  } else if (el.validity.patternMismatch) {
+    el.setCustomValidity(obj.patternMismatch);
+  } else if (el.validity.valueMissing) {
+    el.setCustomValidity(obj.valueMissing);
+  } else if (el === paymentCardNumber && !checkPaymentCard(paymentCardNumber.value)) {
+    el.setCustomValidity(obj.customError);
+  } else {
+    el.setCustomValidity('');
+  }
+}
+
+// Обработчик событий на форме
+var form = document.querySelector('form:nth-child(2)');
+var contactDataName = form.querySelector('#contact-data__name');
+var contactDataTel = form.querySelector('#contact-data__tel');
+var paymentCardNumber = form.querySelector('#payment__card-number');
+var paymentCardDate = form.querySelector('#payment__card-date');
+var paymentCardCVC = form.querySelector('#payment__card-cvc');
+var paymentCardholder = form.querySelector('#payment__cardholder');
+var deliverStreet = form.querySelector('#deliver_street');
+var deliverHouse = form.querySelector('#deliver_house');
+var deliverFloor = form.querySelector('#deliver__floor');
+var deliverRoom = form.querySelector('#deliver__room');
+
+form.addEventListener('change', function (evt) {
+  var target = evt.target;
+  if (contactDataName === target) {
+    getCustomErrors(contactDataName, MESSAGE_ERRORS['contactDataName']);
+  } else if (contactDataTel === target) {
+    getCustomErrors(contactDataTel, MESSAGE_ERRORS['contactDataTel']);
+
+  } else if (selectedPaymentMethod === 'payment__card' && paymentCardNumber === target) {
+    getCustomErrors(paymentCardNumber, MESSAGE_ERRORS['paymentCardNumber']);
+
+  } else if (selectedPaymentMethod === 'payment__card' && paymentCardDate === target) {
+    getCustomErrors(paymentCardDate, MESSAGE_ERRORS['paymentCardDate']);
+
+  } else if (selectedPaymentMethod === 'payment__card' && paymentCardCVC === target) {
+    getCustomErrors(paymentCardCVC, MESSAGE_ERRORS['paymentCardCVC']);
+
+  } else if (selectedPaymentMethod === 'payment__card' && paymentCardholder === target) {
+    getCustomErrors(paymentCardholder, MESSAGE_ERRORS['paymentCardholder']);
+
+  } else if (selectedDeliverMethod === 'deliver__courier' && deliverStreet === target) {
+    getCustomErrors(deliverStreet, MESSAGE_ERRORS['deliverStreet']);
+
+  } else if (selectedDeliverMethod === 'deliver__courier' && deliverHouse === target) {
+    getCustomErrors(deliverHouse, MESSAGE_ERRORS['deliverHouse']);
+
+  } else if (selectedDeliverMethod === 'deliver__courier' && deliverFloor === target) {
+    getCustomErrors(deliverFloor, MESSAGE_ERRORS['deliverFloor']);
+
+  } else if (selectedDeliverMethod === 'deliver__courier' && deliverRoom === target) {
+    getCustomErrors(deliverRoom, MESSAGE_ERRORS['deliverRoom']);
+  }
+}, true);
+
+// Автодополнение символа /
+function inputKeyupHandler(evt) {
+  if (evt.keyCode !== 8) {
+    if (paymentCardDate.value.length === 2) {
+      paymentCardDate.value += '/';
+    }
+  }
+}
+
+paymentCardDate.addEventListener('keyup', inputKeyupHandler);
+form.addEventListener('change', dataValiditySubmitHandler);
+var paymentCardStatus = document.querySelector('.payment__card-status');
+
+// Валидация формы
+function dataValiditySubmitHandler() {
+  if (paymentCardNumber.validity.valid &&
+    checkPaymentCard(paymentCardNumber.value) &&
+    paymentCardDate.validity.valid &&
+    paymentCardCVC.validity.valid &&
+    paymentCardholder.validity.valid) {
+    paymentCardStatus.textContent = 'Одобрен';
+  }
 }
 
 // Показываем товары на странице

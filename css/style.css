@@ -1354,3 +1354,6 @@ body {
 .modal__message {
   padding-bottom: 0;
 }
+.hidden__opacity {
+  opacity: 0;
+}

@@ -334,6 +334,10 @@ var MIN = 0;
 var MAX = 245;
 var ELEMENT_WIDTH = 240;
 
+/**
+ * module5-task1 - start
+ */
+
 // Координаты слайдера
 var sliderLineCoords = getCoords(sliderLine);
 rangeMin.addEventListener('mousedown', rangeMinMouseDownHandler);
@@ -351,12 +355,14 @@ function rangeMinMouseDownHandler(evt) {
   document.addEventListener('mousemove', rangeMinMouseMoveHandler);
 
   function rangeMinMouseMoveHandler(e) {
+    priceMin.textContent = parseInt(min, 10);
+
     var newLeft = e.pageX - shiftX - sliderLineCoords.left;
     if (newLeft < MIN) {
       newLeft = MIN;
     }
-    if (newLeft > max - rangeMin.offsetWidth / 2) {
-      newLeft = max - rangeMin.offsetWidth / 2;
+    if (newLeft > max - rangeMax.offsetWidth / 2) {
+      newLeft = max - rangeMax.offsetWidth / 2;
     }
     min = newLeft;
     rangeMin.style.left = newLeft + 'px';
@@ -365,8 +371,6 @@ function rangeMinMouseDownHandler(evt) {
 
   // Обработчик клика на MouseUp у шкалы фильтра (для мин. значения)
   function rangeMinMouseUpHandler() {
-    priceMin.textContent = parseInt(min, 10);
-    priceMax.textContent = parseInt(max, 10);
     document.removeEventListener('mousemove', rangeMinMouseMoveHandler);
     document.removeEventListener('mouseup', rangeMinMouseUpHandler);
   }
@@ -386,6 +390,8 @@ function rangeMaxMouseDownHandler(evt) {
   document.addEventListener('mousemove', rangeMaxMouseMoveHandler);
 
   function rangeMaxMouseMoveHandler(e) {
+    priceMax.textContent = parseInt(max, 10);
+
     var newRight = e.pageX - shiftX - sliderLineCoords.left;
     if (newRight > MAX) {
       newRight = MAX;
@@ -400,8 +406,6 @@ function rangeMaxMouseDownHandler(evt) {
 
   // Обработчик клика на MouseUp у шкалы фильтра (для макс. значения)
   function rangeMaxMouseUpHandler() {
-    priceMin.textContent = parseInt(min, 10);
-    priceMax.textContent = parseInt(max, 10);
     document.removeEventListener('mousemove', rangeMaxMouseMoveHandler);
     document.removeEventListener('mouseup', rangeMaxMouseUpHandler);
   }
@@ -418,6 +422,9 @@ function getCoords(elem) {
     left: elCoords.left + pageXOffset
   };
 }
+/**
+ * module5-task1 - end
+ */
 
 /**
  * Основная функция для отображения данных - showGoods()

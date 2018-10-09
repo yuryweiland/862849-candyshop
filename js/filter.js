@@ -1,6 +1,6 @@
 'use strict';
 
-var filterModule = (function () {
+(function () {
   var sliderLine = document.querySelector('.range__filter'); // Шкала (слайдер)
   var sliderFillLine = document.querySelector('.range__fill-line'); // Заполнитель
   var rangeMin = document.querySelector('.range__btn--left'); // Левый ползунок
@@ -99,24 +99,7 @@ var filterModule = (function () {
     };
   }
 
-  return {
-    listenToPriceRadio: function () {
-      rangeMin.addEventListener('mousedown', rangeMinMouseDownHandler);
-      rangeMax.addEventListener('mousedown', rangeMaxMouseDownHandler);
-    },
-    onFilterChange: function () {
-    }
-  };
-})();
-var initModule = (function (options) {
-  var _filterModule = options.filterModule;
-  return {
-    main: function () {
-      _filterModule.listenToPriceRadio();
-      _filterModule.onFilterChange(function () {
-      });
-    }
-  };
-})({filterModule: filterModule});
+  rangeMin.addEventListener('mousedown', rangeMinMouseDownHandler);
+  rangeMax.addEventListener('mousedown', rangeMaxMouseDownHandler);
 
-initModule.main();
+})();

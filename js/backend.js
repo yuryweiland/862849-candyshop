@@ -2,7 +2,7 @@
 
 (function () {
   var CALLBACK_NAME = '__jsonpCallback'; // Callback-функция (то есть возвращает ответ от сервера)
-  var DATA_URL = 'https://js.dump.academy/candyshop/data';  // URL, по которому получаем данные с сервера формате JSON
+  var DATA_URL = 'https://js.dump.academy/candyshop/data'; // URL, по которому получаем данные с сервера формате JSON
   var API_URL = 'https://js.dump.academy/candyshop'; // URL, по которму отправляем данные на сервер (API)
 
   // Записываем в window.load функцию
@@ -13,9 +13,7 @@
     xhr.addEventListener('load', function () {
       // Если http-ответ от сервера имеет статус 200 HTTP OK
       if (xhr.status === 200) {
-        window[CALLBACK_NAME] = function (data) {
-          onLoad(data);
-        };
+        CALLBACK_NAME = onLoad(xhr.response);
       } else {
         // Если http-ответ от сервера имеет статус, отличный от 200, сообщаем об этом ошибкой
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -39,7 +37,7 @@
   };
 
   // Отправка данных на сервер
-  window.upload = function (data, onLoad, onError) {
+  window.sendData = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responceType = 'json';
     xhr.addEventListener('load', function () {

@@ -1,6 +1,6 @@
 'use strict';
 
-var checkoutModule = (function () {
+(function () {
   var selectedPaymentMethod = 'payment__card';
   var selectedDeliverMethod = 'deliver__store';
 
@@ -16,7 +16,7 @@ var checkoutModule = (function () {
   var deliver = document.querySelector('.deliver');
   deliver.addEventListener('click', deliverFormClickHandler);
 
-// Обработчик клика по вкладкам в блоке "Оплата"
+  // Обработчик клика по вкладкам в блоке "Оплата"
   function paymentFormClickHandler(evt) {
     var target = evt.target;
     var inputClass = target.closest('.toggle-btn__input');
@@ -39,7 +39,7 @@ var checkoutModule = (function () {
     }
   }
 
-// Обработчик клика по вкладкам в блоке "Доставка"
+  // Обработчик клика по вкладкам в блоке "Доставка"
   function deliverFormClickHandler(evt) {
     var target = evt.target;
     var inputClass = target.closest('.toggle-btn__input');
@@ -65,7 +65,7 @@ var checkoutModule = (function () {
     }
   }
 
-// Деактивируем input у скрытых полей формы
+  // Деактивируем input у скрытых полей формы
   function setDisabledInputs(el, bool) {
     var blockInputs = el.querySelectorAll('input');
 
@@ -74,7 +74,7 @@ var checkoutModule = (function () {
     });
   }
 
-// Устанавливаем обязательные поля у выбранных вариантов доставки и оплаты
+  // Устанавливаем обязательные поля у выбранных вариантов доставки и оплаты
   function setRequiredInputs(el, bool) {
     var blockInputs = el.querySelectorAll('input');
 
@@ -116,7 +116,7 @@ var checkoutModule = (function () {
     return !!(result >= 10 && result % 10 === 0);
   }
 
-// События
+  // События
   var MESSAGE_ERRORS = {
     contactDataName: {
       tooShort: 'Имя должно состоять минимум из 2-х символов',
@@ -197,7 +197,7 @@ var checkoutModule = (function () {
     }
   }
 
-// Обработчик событий на форме
+  // Обработчик событий на форме
   var form = document.querySelector('form:nth-child(2)');
   var contactDataName = form.querySelector('#contact-data__name');
   var contactDataTel = form.querySelector('#contact-data__tel');
@@ -244,7 +244,7 @@ var checkoutModule = (function () {
     }
   }, true);
 
-// Автодополнение символа /
+  // Автодополнение символа /
   function inputKeyupHandler(evt) {
     if (evt.keyCode !== 8) {
       if (paymentCardDate.value.length === 2) {
@@ -256,7 +256,7 @@ var checkoutModule = (function () {
   paymentCardDate.addEventListener('keyup', inputKeyupHandler);
   form.addEventListener('change', dataValiditySubmitHandler);
 
-// Валидация формы
+  // Валидация формы
   function dataValiditySubmitHandler() {
     if (paymentCardNumber.validity.valid &&
       checkPaymentCard(paymentCardNumber.value) &&
@@ -267,48 +267,12 @@ var checkoutModule = (function () {
     }
   }
 
-  return {
-    setDisabledInputs(paymentCard, false);
-    setDisabledInputs(paymentCash, true);
-    setDisabledInputs(deliverStore, false);
-    setDisabledInputs(deliverCourier, true);
+  setDisabledInputs(paymentCard, false);
+  setDisabledInputs(paymentCash, true);
+  setDisabledInputs(deliverStore, false);
+  setDisabledInputs(deliverCourier, true);
 
-    setRequiredInputs(paymentCard, true);
-    setRequiredInputs(deliverStore, true);
-  }
+  setRequiredInputs(paymentCard, true);
+  setRequiredInputs(deliverStore, true);
 
 })();
-
-var initModule = (function (options) {
-  var _checkoutModule = options._checkoutModule;
-  return {
-    main: function () {
-      _checkoutModule.setDisabledInputs(paymentCard, false);
-      _checkoutModule.setDisabledInputs(paymentCash, true);
-      _checkoutModule.setDisabledInputs(deliverStore, false);
-      _checkoutModule.setDisabledInputs(deliverCourier, true);
-
-      _checkoutModule.setRequiredInputs(paymentCard, true);
-      _checkoutModule.setRequiredInputs(deliverStore, true);
-
-
-      // var filters = 'mock data';
-
-      // _checkoutModule.listenToPriceRadio();
-      // _checkoutModule.onFilterChange(function () {
-      //   window.productModule.applyFilters(filters);
-      // });
-    }
-  };
-})({checkoutModule: checkoutModule});
-
-initModule.main();
-
-
-// setDisabledInputs(paymentCard, false);
-// setDisabledInputs(paymentCash, true);
-// setDisabledInputs(deliverStore, false);
-// setDisabledInputs(deliverCourier, true);
-//
-// setRequiredInputs(paymentCard, true);
-// setRequiredInputs(deliverStore, true);

@@ -151,7 +151,7 @@ var productsModule = (function () {
   }
 
 })();
-
+/*
 var initModule = (function (options) {
   var _productsModule = options.productsModule;
   return {
@@ -162,6 +162,6 @@ var initModule = (function (options) {
       });
     }
   };
-})({filterModule: filterModule});
+})({productcModule: productsModule});
 
-initModule.main();
+initModule.main();*/

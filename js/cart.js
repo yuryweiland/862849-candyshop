@@ -6,7 +6,6 @@ var cartModule = (function () {
   var cardWidget = document.querySelector('.main-header__basket');
   var orderButton = document.querySelector('.buy__submit-btn');
 
-
   var cardBtnFavorite = goodElement.querySelector('.card__btn-favorite');
   cardBtnFavorite.addEventListener('click', clickBtnFavoriteHandler);
 

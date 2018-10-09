@@ -267,8 +267,42 @@ var checkoutModule = (function () {
     }
   }
 
+  return {
+    setDisabledInputs(paymentCard, false);
+    setDisabledInputs(paymentCash, true);
+    setDisabledInputs(deliverStore, false);
+    setDisabledInputs(deliverCourier, true);
+
+    setRequiredInputs(paymentCard, true);
+    setRequiredInputs(deliverStore, true);
+  }
 
 })();
+
+var initModule = (function (options) {
+  var _checkoutModule = options._checkoutModule;
+  return {
+    main: function () {
+      _checkoutModule.setDisabledInputs(paymentCard, false);
+      _checkoutModule.setDisabledInputs(paymentCash, true);
+      _checkoutModule.setDisabledInputs(deliverStore, false);
+      _checkoutModule.setDisabledInputs(deliverCourier, true);
+
+      _checkoutModule.setRequiredInputs(paymentCard, true);
+      _checkoutModule.setRequiredInputs(deliverStore, true);
+
+
+      // var filters = 'mock data';
+
+      // _checkoutModule.listenToPriceRadio();
+      // _checkoutModule.onFilterChange(function () {
+      //   window.productModule.applyFilters(filters);
+      // });
+    }
+  };
+})({checkoutModule: checkoutModule});
+
+initModule.main();
 
 
 // setDisabledInputs(paymentCard, false);

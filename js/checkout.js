@@ -89,7 +89,6 @@
     }
   }
 
-
   // Проверка номера банковской карты по алгоритму Луна
   function checkPaymentCard(num) {
     if (selectedPaymentMethod !== 'payment__card' || num === null && typeof num === 'undefined' && num.trim() === '') {
@@ -116,7 +115,7 @@
     return !!(result >= 10 && result % 10 === 0);
   }
 
-  // События
+  // Сообщения об ошибках
   var MESSAGE_ERRORS = {
     contactDataName: {
       tooShort: 'Имя должно состоять минимум из 2-х символов',
@@ -273,7 +272,8 @@
     }
   }
 
-  function successFormHandler() {
+  // Обработчик формы оформления заказа (при клике на "Заказать")
+  function onSuccessFormHandler() {
     var modalSuccess = document.querySelector('.modal--success');
     modalSuccess.classList.remove('modal--hidden');
     var modalClose = modalSuccess.querySelector('.modal__close');
@@ -304,18 +304,20 @@
   }
 
   form.addEventListener('submit', function (evt) {
-    window.sendData(new FormData(form), successFormHandler, errorFormHandler);
+    window.sendData(new FormData(form), onSuccessFormHandler, errorFormHandler);
     document.querySelectorAll('input').forEach(function (inputElement) {
       inputElement.value = inputElement.defaultValue;
     });
     evt.preventDefault();
   });
 
+  // Выставляем input-полям неактивных способов доставк и оплаты св-во disabled
   setDisabledInputs(paymentCard, false);
   setDisabledInputs(paymentCash, true);
   setDisabledInputs(deliverStore, false);
   setDisabledInputs(deliverCourier, true);
 
+  // Выставляем input-полям активных способов доставк и оплаты св-во required
   setRequiredInputs(paymentCard, true);
   setRequiredInputs(deliverStore, true);
 

@@ -99,6 +99,7 @@
     };
   }
 
+  // Слушаем клик по минимальной и максимальной границам слайдера (шкалы)
   rangeMin.addEventListener('mousedown', rangeMinMouseDownHandler);
   rangeMax.addEventListener('mousedown', rangeMaxMouseDownHandler);
 

@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   // Массив товаров
   var arrayGoods = [];
@@ -12,50 +13,96 @@
 
   // Добавлением класса visually-hidden блок catalog__load
   var catalogLoad = document.querySelector('.catalog__load');
-  catalogLoad.classList.add('visually-hidden');
 
   // Находим шаблон, который будем копировать
   var goodElements = document.querySelector('#card').content.querySelector('.catalog__card');
 
   var cardWidget = document.querySelector('.main-header__basket');
 
+  // Рейтинг
+  var RATING_ARRAY = [
+    'stars__rating--one',
+    'stars__rating--two',
+    'stars__rating--three',
+    'stars__rating--four',
+    'stars__rating--five'
+  ];
+
+  // Обработчик при успешной загрузке товаров с сервера
+  function onCatalogLoadSuccessHandler(dataCards) {
+    var fragment = document.createDocumentFragment();
+
+    catalogCards.classList.remove('catalog__cards--load');
+    arrayGoods = JSON.parse(dataCards);
+
+    catalogLoad.classList.add('visually-hidden');
+
+    for (var i = 0; i < arrayGoods.length; i++) {
+      fragment.appendChild(renderGood(arrayGoods[i]));
+    }
+    catalogCards.appendChild(fragment);
+  }
+
+  // Обработчик при неудачной загрузке товаров с сервера (выкидываем модалку пользователю)
+  function onCatalogLoadErrorHandler(errorMessage) {
+    var modalError = document.querySelector('.modal--error');
+    var modalMessage = modalError.querySelector('.modal__message');
+    var modalClose = modalError.querySelector('.modal__close');
+
+    modalError.classList.remove('modal--hidden');
+
+    modalMessage.textContent = errorMessage;
+
+    modalClose.addEventListener('click', function () {
+      modalError.classList.add('modal--hidden');
+      document.removeEventListener('keydown', window.modal.modalKeydownHandler);
+    });
+
+    document.addEventListener('keydown', window.modal.modalKeydownHandler);
+  }
+
+  window.backend.load('GET', onCatalogLoadSuccessHandler, onCatalogLoadErrorHandler);
+
   // Генерируем товар - создаем DOM-элементы и заполняем данными из массива
   function renderGood(good) {
     var goodElement = goodElements.cloneNode(true); // Клонируем товар
+    var cardTitle = goodElement.querySelector('.card__title');
+    var cardImg = goodElement.querySelector('.card__img');
+    var cardPrice = goodElement.querySelector('.card__price');
+
+    var starsRating = goodElement.querySelector('.stars__rating');
+    var starCount = goodElement.querySelector('.star__count');
+
+    var cardBtnFavorite = goodElement.querySelector('.card__btn-favorite');
+    var cardBtn = goodElement.querySelector('.card__btn');
 
     getAmountClass(good, goodElement);
 
-    var cardTitle = goodElement.querySelector('.card__title');
     cardTitle.textContent = good.name; // Вставим название в блок
-
-    var cardImg = goodElement.querySelector('.card__img');
-    cardImg.src = good.picture;
-
-    var cardPrice = goodElement.querySelector('.card__price');
+    cardImg.src = 'img/cards/' + good.picture; // Изображение твоара
     cardPrice.innerHTML = good.price + '&nbsp;<span class="card__currency">₽</span><span class="card__weight">/ ' + good.weight + ' Г</span>';
 
     // Добавляем класс рейтинга в зависимоти от значения
-    var starsRating = goodElement.querySelector('.stars__rating');
     starsRating.classList.remove('stars__rating--five');
-    starsRating.classList.add(window.data.RATING_ARRAY[good.rating.value + 1]);
+    starsRating.classList.add(RATING_ARRAY[good.rating.value + 1]);
 
     // Рейтинг
-    var starCount = goodElement.querySelector('.star__count');
     starCount.textContent = good.rating.number;
+
     isSugar(goodElement, good);
-    var cardBtnFavorite = goodElement.querySelector('.card__btn-favorite');
+
     cardBtnFavorite.addEventListener('click', clickBtnFavoriteHandler);
-    var cardBtn = goodElement.querySelector('.card__btn');
+
     cardBtn.addEventListener('click', clickAddToCardHandler);
 
     // Функция добавления товара в корзину
     function clickAddToCardHandler() {
-      goodsCards.classList.remove('goods__cards--empty');
-      goodsCardEmpty.classList.add('visually-hidden');
-
       // Клонируем товар
       var goodCard = Object.assign({}, good);
       var sum = 0;
+
+      goodsCards.classList.remove('goods__cards--empty');
+      goodsCardEmpty.classList.add('visually-hidden');
 
       // Если количество больше 0, то добавляем товар в корзину
       if (good.amount > 0) {
@@ -105,25 +152,18 @@
 
   // Показываем и убираем класс при нажатие на кнопку "Добавить в Избранное"
   function clickBtnFavoriteHandler(evt) {
-    var cardFavotireElement = evt.currentTarget;
-    cardFavotireElement.classList.toggle('card__btn-favorite--selected');
+    var cardFavoriteElement = evt.currentTarget;
+    cardFavoriteElement.classList.toggle('card__btn-favorite--selected');
   }
-
-  function addElementsCatalog(length) {
-    for (var i = 0; i < length; i++) {
-      var elGood = window.data.generateGoods(i);
-      arrayGoods.push(elGood);
-    }
-  }
-
-  addElementsCatalog(window.data.CATALOG_GOODS);
 
   // Показать товары в каталоге
   function showGoods(callback, catalog) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < arrayGoods.length; i++) {
-      fragment.appendChild(callback(arrayGoods[i]));
-    }
+
+    arrayGoods.forEach(function (good, index) {
+      fragment.appendChild(callback(arrayGoods[index]));
+    });
+
     catalog.appendChild(fragment);
   }
 
@@ -184,7 +224,7 @@
     var cardOrderTitle = cardElement.querySelector('.card-order__title');
     cardOrderTitle.textContent = good.name;
     var cardOrderImg = cardElement.querySelector('.card-order__img');
-    cardOrderImg.src = good.picture;
+    cardOrderImg.src = 'img/cards/' + good.picture;
     var cardOrderPrice = cardElement.querySelector('.card-order__price');
     cardOrderPrice.textContent = good.price + ' ₽';
     var cardOrderCount = cardElement.querySelector('.card-order__count');
@@ -266,4 +306,10 @@
       goodsCardEmpty.classList.remove('visually-hidden');
     }
   }
+
+  // Добавляем вызов скрипта с API в index.html
+  var loader = document.createElement('script');
+  loader.src = window.backend.DATA_URL + '?callback=' + window.backend.CALLBACK_NAME;
+  document.body.append(loader);
+
 })();

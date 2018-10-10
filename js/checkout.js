@@ -89,7 +89,6 @@
     }
   }
 
-
   // Проверка номера банковской карты по алгоритму Луна
   function checkPaymentCard(num) {
     if (selectedPaymentMethod !== 'payment__card' || num === null && typeof num === 'undefined' && num.trim() === '') {
@@ -116,7 +115,7 @@
     return !!(result >= 10 && result % 10 === 0);
   }
 
-  // События
+  // Сообщения об ошибках
   var MESSAGE_ERRORS = {
     contactDataName: {
       tooShort: 'Имя должно состоять минимум из 2-х символов',
@@ -213,34 +212,40 @@
 
   form.addEventListener('change', function (evt) {
     var target = evt.target;
-    if (contactDataName === target) {
-      getCustomErrors(contactDataName, MESSAGE_ERRORS['contactDataName']);
-    } else if (contactDataTel === target) {
-      getCustomErrors(contactDataTel, MESSAGE_ERRORS['contactDataTel']);
 
-    } else if (selectedPaymentMethod === 'payment__card' && paymentCardNumber === target) {
-      getCustomErrors(paymentCardNumber, MESSAGE_ERRORS['paymentCardNumber']);
-
-    } else if (selectedPaymentMethod === 'payment__card' && paymentCardDate === target) {
-      getCustomErrors(paymentCardDate, MESSAGE_ERRORS['paymentCardDate']);
-
-    } else if (selectedPaymentMethod === 'payment__card' && paymentCardCVC === target) {
-      getCustomErrors(paymentCardCVC, MESSAGE_ERRORS['paymentCardCVC']);
-
-    } else if (selectedPaymentMethod === 'payment__card' && paymentCardholder === target) {
-      getCustomErrors(paymentCardholder, MESSAGE_ERRORS['paymentCardholder']);
-
-    } else if (selectedDeliverMethod === 'deliver__courier' && deliverStreet === target) {
-      getCustomErrors(deliverStreet, MESSAGE_ERRORS['deliverStreet']);
-
-    } else if (selectedDeliverMethod === 'deliver__courier' && deliverHouse === target) {
-      getCustomErrors(deliverHouse, MESSAGE_ERRORS['deliverHouse']);
-
-    } else if (selectedDeliverMethod === 'deliver__courier' && deliverFloor === target) {
-      getCustomErrors(deliverFloor, MESSAGE_ERRORS['deliverFloor']);
-
-    } else if (selectedDeliverMethod === 'deliver__courier' && deliverRoom === target) {
-      getCustomErrors(deliverRoom, MESSAGE_ERRORS['deliverRoom']);
+    switch (target) {
+      case contactDataName:
+        getCustomErrors(contactDataName, MESSAGE_ERRORS['contactDataName']);
+        break;
+      case contactDataTel:
+        getCustomErrors(contactDataTel, MESSAGE_ERRORS['contactDataTel']);
+        break;
+      case paymentCardNumber:
+        getCustomErrors(paymentCardNumber, MESSAGE_ERRORS['paymentCardNumber']);
+        break;
+      case paymentCardDate:
+        getCustomErrors(paymentCardDate, MESSAGE_ERRORS['paymentCardDate']);
+        break;
+      case paymentCardCVC:
+        getCustomErrors(paymentCardCVC, MESSAGE_ERRORS['paymentCardCVC']);
+        break;
+      case paymentCardholder:
+        getCustomErrors(paymentCardholder, MESSAGE_ERRORS['paymentCardholder']);
+        break;
+      case deliverStreet:
+        getCustomErrors(deliverStreet, MESSAGE_ERRORS['deliverStreet']);
+        break;
+      case deliverHouse:
+        getCustomErrors(deliverHouse, MESSAGE_ERRORS['deliverHouse']);
+        break;
+      case deliverFloor:
+        getCustomErrors(deliverFloor, MESSAGE_ERRORS['deliverFloor']);
+        break;
+      case deliverRoom:
+        getCustomErrors(deliverRoom, MESSAGE_ERRORS['deliverRoom']);
+        break;
+      default:
+        break;
     }
   }, true);
 
@@ -267,11 +272,52 @@
     }
   }
 
+  // Обработчик формы оформления заказа (при клике на "Заказать")
+  function onSuccessFormHandler() {
+    var modalSuccess = document.querySelector('.modal--success');
+    modalSuccess.classList.remove('modal--hidden');
+    var modalClose = modalSuccess.querySelector('.modal__close');
+    modalClose.addEventListener('click', function () {
+      modalSuccess.classList.add('modal--hidden');
+    });
+    document.addEventListener('keydown', successModalKeydownHandler);
+
+    function successModalKeydownHandler() {
+      modalSuccess.classList.add('modal--hidden');
+      document.removeEventListener('keydown', successModalKeydownHandler);
+    }
+  }
+
+  var modalError = document.querySelector('.modal--error');
+
+  function errorFormHandler(errorMessage) {
+    modalError.classList.remove('modal--hidden');
+    var modalMessage = modalError.querySelector('.modal__message');
+    modalMessage.textContent = errorMessage;
+    var modalClose = modalError.querySelector('.modal__close');
+
+    modalClose.addEventListener('click', function () {
+      modalError.classList.add('modal--hidden');
+    });
+
+    document.addEventListener('keydown', window.modal.modalKeydownHandler);
+  }
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.load('POST', onSuccessFormHandler, errorFormHandler, new FormData(form));
+    document.querySelectorAll('input').forEach(function (inputElement) {
+      inputElement.value = inputElement.defaultValue;
+    });
+    evt.preventDefault();
+  });
+
+  // Выставляем input-полям неактивных способов доставк и оплаты св-во disabled
   setDisabledInputs(paymentCard, false);
   setDisabledInputs(paymentCash, true);
   setDisabledInputs(deliverStore, false);
   setDisabledInputs(deliverCourier, true);
 
+  // Выставляем input-полям активных способов доставк и оплаты св-во required
   setRequiredInputs(paymentCard, true);
   setRequiredInputs(deliverStore, true);
 

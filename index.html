@@ -144,8 +144,8 @@
     <section class="buy">
       <h2 class="visually-hidden">Оформление покупки</h2>
 
-      <form action="/" method="post" autocomplete="off">
-        <section class="goods">
+      <form method="post" enctype="multipart/form-data" autocomplete="off">
+      <section class="goods">
           <div class="goods__wrap container">
             <h2 class="group-title goods__title" id="basket">Твои покупки</h2>
             <div class="goods__card-wrap">
@@ -244,7 +244,7 @@
                   </div>
                 </div>
                 <div class="describe">
-                  <p class="describe__text"><b>Мы гарантируем безопасностной твоих данных.</b></p>
+                  <p class="describe__text"><b>Мы гарантируем безопасность твоих данных.</b></p>
                   <p class="describe__text">Все данные банковской карты вводи точно как написано на карте.</p>
                   <p class="describe__text">Не волнуйся, наша система поможет с заполеннием.</p>
                   <p class="describe__text">После заполнения всех полей, система проверит функционирование карты и можно переходить к доставке.</p>
@@ -401,7 +401,7 @@
     </div>
   </footer>
 
-  <section class="modal modal--hidden">
+  <section class="modal modal--error modal--hidden">
     <div class="modal__inner">
       <button class="modal__close" type="button">Закрыть окно</button>
       <h3 class="modal__title">Произошла ошибка!</h3>
@@ -410,7 +410,7 @@
     </div>
   </section>
 
-  <section class="modal modal--hidden">
+  <section class="modal modal--success modal--hidden">
     <div class="modal__inner">
       <button class="modal__close" type="button">Закрыть окно</button>
       <h3 class="modal__title">Данные успешно отправлены!</h3>
@@ -483,7 +483,8 @@
     </div>
   </template>
 
-  <script src="js/products.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/modal.js"></script>
   <script src="js/catalog.js"></script>
   <script src="js/checkout.js"></script>
   <script src="js/filter.js"></script>

@@ -304,7 +304,7 @@
   }
 
   form.addEventListener('submit', function (evt) {
-    window.sendData(new FormData(form), onSuccessFormHandler, errorFormHandler);
+    window.backend.load('POST', onSuccessFormHandler, errorFormHandler, new FormData(form));
     document.querySelectorAll('input').forEach(function (inputElement) {
       inputElement.value = inputElement.defaultValue;
     });

@@ -61,7 +61,7 @@
     document.addEventListener('keydown', window.modal.modalKeydownHandler);
   }
 
-  window.load(onCatalogLoadSuccessHandler, onCatalogLoadErrorHandler);
+  window.backend.load('GET', onCatalogLoadSuccessHandler, onCatalogLoadErrorHandler);
 
   // Генерируем товар - создаем DOM-элементы и заполняем данными из массива
   function renderGood(good) {

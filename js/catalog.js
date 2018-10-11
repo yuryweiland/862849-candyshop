@@ -23,15 +23,6 @@
 
   var cardWidget = document.querySelector('.main-header__basket');
 
-  // Рейтинг
-  var RATING_ARRAY = [
-    'stars__rating--one',
-    'stars__rating--two',
-    'stars__rating--three',
-    'stars__rating--four',
-    'stars__rating--five'
-  ];
-
   // Обработчик при успешной загрузке товаров с сервера
   function onCatalogLoadSuccessHandler(dataCards) {
     arrayGoods = JSON.parse(dataCards);
@@ -40,7 +31,7 @@
     catalogCards.removeChild(loadData);
 
     renderCatalog(arrayGoods);
-    window.filter.updateCatalog(dataCards);
+    window.filter.updateCatalog(arrayGoods);
   }
 
   // Функция рендера товаров
@@ -93,7 +84,7 @@
 
     // Добавляем класс рейтинга в зависимоти от значения
     starsRating.classList.remove('stars__rating--five');
-    starsRating.classList.add(RATING_ARRAY[good.rating.value + 1]);
+    starsRating.classList.add(window.utils.RATING_ARRAY[good.rating.value + 1]);
 
     // Рейтинг
     starCount.textContent = good.rating.number;
@@ -249,7 +240,6 @@
     //  Функция удаления товара в магазине
     var btnClose = cardElement.querySelector('.card-order__close');
     btnClose.addEventListener('click', btnCloseClickHandler);
-    var goodsCards = document.querySelector('.goods__cards');
 
     function btnCloseClickHandler() {
       deleteGood(basketCards, good, goodsCards, cardElement);

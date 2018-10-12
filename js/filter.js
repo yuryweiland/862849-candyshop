@@ -57,7 +57,7 @@
 
   // Показать количество товара подходящими по фильтрацию
   function generateFilterCount() {
-    var filtercountIceCream = document.querySelector('label[for="filter-icecream"] + .input-btn__item-count');
+    var filterCountIceCream = document.querySelector('label[for="filter-icecream"] + .input-btn__item-count');
     var filterCountSoda = document.querySelector('label[for="filter-soda"] + .input-btn__item-count');
     var filterCountGum = document.querySelector('label[for="filter-gum"] + .input-btn__item-count');
     var filterCountMarmalade = document.querySelector('label[for="filter-marmalade"] + .input-btn__item-count');
@@ -112,7 +112,7 @@
       }
     }
 
-    filtercountIceCream.textContent = '(' + countIceCream + ')';
+    filterCountIceCream.textContent = '(' + countIceCream + ')';
     filterCountSoda.textContent = '(' + countSoda + ')';
     filterCountGum.textContent = '(' + countGum + ')';
     filterCountMarmalade.textContent = '(' + countMarmalade + ')';
@@ -126,6 +126,7 @@
   function generateFilters() {
     window.catalog.cleanCatalog();
     var arrayFilterGoods = [];
+    
     // Один раз проходим по массиву объектов продуктов
     arrFilter.forEach(function (it) {
       var emptyFilterKinds = arrFilterSort.kinds.length === 0;

@@ -373,7 +373,7 @@
       document.addEventListener('mouseup', rangeMinMouseUpHandler);
 
       function rangeMinMouseUpHandler(event) {
-        getLeftSliderCoords(event, shiftX);
+        getLeftSliderCoords(e, shiftX);
         addFilterPrice(min, max);
         calculatePriceFilterMinMax(min, max);
 

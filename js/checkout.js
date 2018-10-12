@@ -70,7 +70,7 @@
     var blockInputs = el.querySelectorAll('input');
 
     blockInputs.forEach(function (input, index) {
-      blockInputs[index].disabled = bool;
+        blockInputs[index].disabled = bool;
     });
   }
 
@@ -80,13 +80,19 @@
 
     if (bool) {
       blockInputs.forEach(function (input, index) {
-        blockInputs[index].setAttribute('required', '');
+        if (blockInputs[index].id !== 'deliver__floor') {
+          blockInputs[index].setAttribute('required', '');
+        }
       });
     } else {
       blockInputs.forEach(function (input, index) {
         blockInputs[index].removeAttribute('required');
+
+        console.log(el);
+
       });
     }
+
   }
 
   // Проверка номера банковской карты по алгоритму Луна
@@ -194,7 +200,7 @@
   }
 
   paymentCardDate.addEventListener('keyup', inputKeyupHandler);
-  form.addEventListener('change', dataValiditySubmitHandler);
+  form.addEventListener('keyup', dataValiditySubmitHandler);
 
   // Валидация формы
   function dataValiditySubmitHandler() {
@@ -203,7 +209,9 @@
       paymentCardDate.validity.valid &&
       paymentCardCVC.validity.valid &&
       paymentCardholder.validity.valid) {
-      paymentCardStatus.textContent = 'Одобрен';
+        paymentCardStatus.textContent = 'Одобрен';
+    } else {
+        paymentCardStatus.textContent = 'Не определён';
     }
   }
 

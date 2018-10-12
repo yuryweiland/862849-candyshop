@@ -57,7 +57,7 @@
 
   // Показать количество товара подходящими по фильтрацию
   function generateFilterCount() {
-    var filterCountIcecream = document.querySelector('label[for="filter-icecream"] + .input-btn__item-count');
+    var filtercountIceCream = document.querySelector('label[for="filter-icecream"] + .input-btn__item-count');
     var filterCountSoda = document.querySelector('label[for="filter-soda"] + .input-btn__item-count');
     var filterCountGum = document.querySelector('label[for="filter-gum"] + .input-btn__item-count');
     var filterCountMarmalade = document.querySelector('label[for="filter-marmalade"] + .input-btn__item-count');
@@ -66,7 +66,7 @@
     var filterCountVegetarian = document.querySelector('label[for="filter-vegetarian"] + .input-btn__item-count');
     var filterCountGlutenFree = document.querySelector('label[for="filter-gluten-free"] + .input-btn__item-count');
     var filterCountPrice = document.querySelector('.range__price-count > .range__count');
-    var countIcecream = 0;
+    var countIceCream = 0;
     var countSoda = 0;
     var countGum = 0;
     var countMarmalade = 0;
@@ -78,7 +78,7 @@
 
     for (var i = 0; i < arrFilter.length; i++) {
       if (arrFilter[i].kind === 'Мороженое') {
-        countIcecream += 1;
+        countIceCream += 1;
       }
       if (arrFilter[i].kind === 'Газировка') {
         countSoda += 1;
@@ -112,7 +112,7 @@
       }
     }
 
-    filterCountIcecream.textContent = '(' + countIcecream + ')';
+    filtercountIceCream.textContent = '(' + countIceCream + ')';
     filterCountSoda.textContent = '(' + countSoda + ')';
     filterCountGum.textContent = '(' + countGum + ')';
     filterCountMarmalade.textContent = '(' + countMarmalade + ')';
@@ -190,7 +190,6 @@
   function generateFavorites() {
 
   }
-
 
   function checkNutritionFacts(goodFact) {
     var isSugarFactActive = arrFilterSort.nutritionFacts.sugar === false;

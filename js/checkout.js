@@ -7,7 +7,6 @@
   var paymentCard = document.querySelector('.payment__card');
   var paymentCash = document.querySelector('.payment__cash');
   var deliverStore = document.querySelector('.deliver__store');
-  var deliverStoresFieldset = document.querySelector('.input-btn__input--radio-deliver');
   var deliverStoreList = document.querySelector('.deliver__store-list').querySelectorAll('input');
   var deliverStoreMap = document.querySelector('.deliver__store-map-img');
   var deliverCourier = document.querySelector('.deliver__courier');
@@ -19,7 +18,9 @@
   var deliver = document.querySelector('.deliver');
   deliver.addEventListener('click', deliverFormClickHandler);
 
-  deliverStoresFieldset.addEventListener('change', deliverStoreChangeHandler());
+  document.querySelector('.deliver__store-list').querySelectorAll('input').forEach(function (el) {
+    el.addEventListener('change', deliverStoreChangeHandler);
+  });
 
   // Обработчик клика по вкладкам в блоке "Оплата"
   function paymentFormClickHandler(evt) {

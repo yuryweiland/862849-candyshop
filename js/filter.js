@@ -410,15 +410,15 @@
       var shiftX = evt.pageX - elMaxCoords.left;
       document.addEventListener('mousemove', rangeMaxMouseMoveHandler);
 
-      function rangeMaxMouseMoveHandler(e) {
-        getRightSliderCoords(e, shiftX);
+      function rangeMaxMouseMoveHandler(evt) {
+        getRightSliderCoords(evt, shiftX);
         priceMax.textContent = parseInt(min, 10);
       }
 
       document.addEventListener('mouseup', rangeMaxMouseUpHandler);
 
-      function rangeMaxMouseUpHandler(event) {
-        getRightSliderCoords(event, shiftX);
+      function rangeMaxMouseUpHandler(evt) {
+        getRightSliderCoords(evt, shiftX);
         calculatePriceFilterMinMax(min, max);
         addFilterPrice(min, max);
 
@@ -432,8 +432,8 @@
       return false;
     }
 
-    function getRightSliderCoords(e, shiftX) {
-      var newRight = e.pageX - shiftX - sliderLineCoords.left;
+    function getRightSliderCoords(evt, shiftX) {
+      var newRight = evt.pageX - shiftX - sliderLineCoords.left;
 
       if (newRight > window.utils.MAX) {
         newRight = window.utils.MAX;

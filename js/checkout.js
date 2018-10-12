@@ -115,71 +115,6 @@
     return !!(result >= 10 && result % 10 === 0);
   }
 
-  // Сообщения об ошибках
-  var MESSAGE_ERRORS = {
-    contactDataName: {
-      tooShort: 'Имя должно состоять минимум из 2-х символов',
-      tooLong: 'Имя не должно превышать 25-ти символов',
-      patternMismatch: '',
-      valueMissing: 'Обязательное поле'
-    },
-    contactDataTel: {
-      tooShort: 'Номер телефона должен состоять из 11 цифр',
-      tooLong: 'Номер телефона должен состоять из 11 цифр',
-      patternMismatch: '',
-      valueMissing: 'Обязательное поле'
-    },
-    paymentCardNumber: {
-      tooShort: 'Номер банковской карты должен состоять из 16 цифр',
-      tooLong: 'Номер банковской карты должен состоять из 16 цифр',
-      patternMismatch: 'Номер банковской карты не должен содержать буквы и знаки препинания',
-      customError: 'Данные карты не прошли проверку подлинности',
-      valueMissing: 'Обязательное поле'
-    },
-    paymentCardDate: {
-      tooShort: 'Формат даты должен состоять из 5 символов',
-      tooLong: 'Формат даты должен состоять из 5 символов',
-      patternMismatch: 'Формат даты должен быть мм/ГГ и состоять только из цифр',
-      valueMissing: 'Обязательное поле'
-    },
-    paymentCardCVC: {
-      tooShort: 'Номер CVC должен состоять из трёх цифр',
-      tooLong: 'Номер CVC должен состоять из трёх цифр',
-      patternMismatch: 'Поле CVC содержит только цифры',
-      valueMissing: 'Обязательное поле'
-    },
-    paymentCardholder: {
-      tooShort: 'Имя держателя карты должно состоять минимум из 4-х символов',
-      tooLong: 'Имя держателя карты не должно превышать 50-ти символов',
-      patternMismatch: 'Имя держателя карты должно быть написано латиницей',
-      valueMissing: 'Обязательное поле'
-    },
-    deliverStreet: {
-      tooShort: '',
-      tooLong: 'Название улицы не должно превышать 50-ти символов',
-      patternMismatch: '',
-      valueMissing: 'Обязательное поле'
-    },
-    deliverHouse: {
-      tooShort: '',
-      tooLong: '',
-      patternMismatch: '',
-      valueMissing: 'Обязательное поле'
-    },
-    deliverFloor: {
-      tooShort: '',
-      tooLong: 'Этаж не должен превышать 3-х символов',
-      patternMismatch: 'Поле Этаж содержит только цифры',
-      valueMissing: ''
-    },
-    deliverRoom: {
-      tooShort: '',
-      tooLong: '',
-      patternMismatch: '',
-      valueMissing: 'Обязательное поле'
-    }
-  };
-
   function getCustomErrors(el, obj) {
     if (el.validity.tooShort) {
       el.setCustomValidity(obj.tooShort);
@@ -215,34 +150,34 @@
 
     switch (target) {
       case contactDataName:
-        getCustomErrors(contactDataName, MESSAGE_ERRORS['contactDataName']);
+        getCustomErrors(contactDataName, window.utils.MESSAGE_ERRORS['contactDataName']);
         break;
       case contactDataTel:
-        getCustomErrors(contactDataTel, MESSAGE_ERRORS['contactDataTel']);
+        getCustomErrors(contactDataTel, window.utils.MESSAGE_ERRORS['contactDataTel']);
         break;
       case paymentCardNumber:
-        getCustomErrors(paymentCardNumber, MESSAGE_ERRORS['paymentCardNumber']);
+        getCustomErrors(paymentCardNumber, window.utils.MESSAGE_ERRORS['paymentCardNumber']);
         break;
       case paymentCardDate:
-        getCustomErrors(paymentCardDate, MESSAGE_ERRORS['paymentCardDate']);
+        getCustomErrors(paymentCardDate, window.utils.MESSAGE_ERRORS['paymentCardDate']);
         break;
       case paymentCardCVC:
-        getCustomErrors(paymentCardCVC, MESSAGE_ERRORS['paymentCardCVC']);
+        getCustomErrors(paymentCardCVC, window.utils.MESSAGE_ERRORS['paymentCardCVC']);
         break;
       case paymentCardholder:
-        getCustomErrors(paymentCardholder, MESSAGE_ERRORS['paymentCardholder']);
+        getCustomErrors(paymentCardholder, window.utils.MESSAGE_ERRORS['paymentCardholder']);
         break;
       case deliverStreet:
-        getCustomErrors(deliverStreet, MESSAGE_ERRORS['deliverStreet']);
+        getCustomErrors(deliverStreet, window.utils.MESSAGE_ERRORS['deliverStreet']);
         break;
       case deliverHouse:
-        getCustomErrors(deliverHouse, MESSAGE_ERRORS['deliverHouse']);
+        getCustomErrors(deliverHouse, window.utils.MESSAGE_ERRORS['deliverHouse']);
         break;
       case deliverFloor:
-        getCustomErrors(deliverFloor, MESSAGE_ERRORS['deliverFloor']);
+        getCustomErrors(deliverFloor, window.utils.MESSAGE_ERRORS['deliverFloor']);
         break;
       case deliverRoom:
-        getCustomErrors(deliverRoom, MESSAGE_ERRORS['deliverRoom']);
+        getCustomErrors(deliverRoom, window.utils.MESSAGE_ERRORS['deliverRoom']);
         break;
       default:
         break;

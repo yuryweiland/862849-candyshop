@@ -269,14 +269,14 @@
     function decreaseCardBasket() {
       cardOrderCount.value = +cardOrderCount.value - 1;
       // Обновляем количество и сумму товаров в корзине
-      sum = sum + cardOrderCount.value * parseInt(cardOrderPrice.innerHTML, 10);
+      sum = sum - (parseInt(cardOrderPrice.innerHTML, 10));
       updateCardWidgetText(sum);
     }
 
     function increaseCardBasket() {
       cardOrderCount.value = +cardOrderCount.value + 1;
       // Обновляем количество и сумму товаров в корзине
-      sum = sum + cardOrderCount.value * parseInt(cardOrderPrice.innerHTML, 10);
+      sum = sum + (parseInt(cardOrderPrice.innerHTML, 10));
       updateCardWidgetText(sum);
     }
 

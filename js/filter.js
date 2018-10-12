@@ -365,15 +365,15 @@
       var shiftX = evt.pageX - elMinCoords.left;
       document.addEventListener('mousemove', rangeMinMouseMoveHandler);
 
-      function rangeMinMouseMoveHandler(e) {
+      function rangeMinMouseMoveHandler(evt) {
         getLeftSliderCoords(evt, shiftX);
         priceMin.textContent = parseInt(min, 10);
       }
 
       document.addEventListener('mouseup', rangeMinMouseUpHandler);
 
-      function rangeMinMouseUpHandler(event) {
-        getLeftSliderCoords(e, shiftX);
+      function rangeMinMouseUpHandler(evt) {
+        getLeftSliderCoords(evt, shiftX);
         addFilterPrice(min, max);
         calculatePriceFilterMinMax(min, max);
 

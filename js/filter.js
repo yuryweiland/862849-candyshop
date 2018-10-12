@@ -120,7 +120,6 @@
     filterCountSugarFree.textContent = '(' + countSugarFree + ')';
     filterCountVegetarian.textContent = '(' + countVegetarian + ')';
     filterCountGlutenFree.textContent = '(' + countGlutenFree + ')';
-    filterCountGlutenFree.textContent = '(' + countGlutenFree + ')';
     filterCountPrice.textContent = '(' + countPrice + ')';
   }
   // Выводим товары по фильтрам

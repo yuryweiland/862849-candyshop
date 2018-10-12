@@ -28,11 +28,11 @@
   // Избранное
   var filterFavorite = document.querySelector('#filter-favorite');
   // В наличии
-  var filterАvailability = document.querySelector('#filter-availability');
+  var filterInStock = document.querySelector('#filter-availability');
 
   // Сортировка
   var filterPopular = document.querySelector('#filter-popular');
-  var filterExpencive = document.querySelector('#filter-expensive');
+  var filterExpensive = document.querySelector('#filter-expensive');
   var filterCheep = document.querySelector('#filter-cheep');
   var filterRating = document.querySelector('#filter-rating');
 
@@ -71,9 +71,9 @@
     generateFilterNutritionFacts(filterGlutenFree);
     generateFilterPrice();
     generateFilterFavorites(filterFavorite);
-    generateFilterInStocks(filterАvailability);
+    generateFilterInStocks(filterInStock);
     generateSort(filterPopular);
-    generateSort(filterExpencive);
+    generateSort(filterExpensive);
     generateSort(filterCheep);
     generateSort(filterRating);
     generateShowAll(showAll);

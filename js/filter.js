@@ -366,7 +366,7 @@
       document.addEventListener('mousemove', rangeMinMouseMoveHandler);
 
       function rangeMinMouseMoveHandler(e) {
-        getLeftSliderCoords(e, shiftX);
+        getLeftSliderCoords(evt, shiftX);
         priceMin.textContent = parseInt(min, 10);
       }
 

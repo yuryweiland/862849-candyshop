@@ -7,6 +7,9 @@
   var paymentCard = document.querySelector('.payment__card');
   var paymentCash = document.querySelector('.payment__cash');
   var deliverStore = document.querySelector('.deliver__store');
+  var deliverStoresFieldset = document.querySelector('.input-btn__input--radio-deliver');
+  var deliverStoreList = document.querySelector('.deliver__store-list').querySelectorAll('input');
+  var deliverStoreMap = document.querySelector('.deliver__store-map-img');
   var deliverCourier = document.querySelector('.deliver__courier');
 
   // Переключение вкладок в форме оформления заказа
@@ -15,6 +18,8 @@
 
   var deliver = document.querySelector('.deliver');
   deliver.addEventListener('click', deliverFormClickHandler);
+
+  deliverStoresFieldset.addEventListener('change', deliverStoreChangeHandler());
 
   // Обработчик клика по вкладкам в блоке "Оплата"
   function paymentFormClickHandler(evt) {
@@ -55,7 +60,6 @@
       setDisabledInputs(deliverStore, false);
       setDisabledInputs(deliverCourier, true);
       setRequiredInputs(deliverStore, true);
-
     } else if (selectedDeliverMethod === 'deliver__courier') {
       document.querySelector('.' + selectedDeliverMethod).classList.remove('visually-hidden');
       deliverStore.classList.add('visually-hidden');
@@ -70,7 +74,7 @@
     var blockInputs = el.querySelectorAll('input');
 
     blockInputs.forEach(function (input, index) {
-        blockInputs[index].disabled = bool;
+      blockInputs[index].disabled = bool;
     });
   }
 
@@ -87,12 +91,8 @@
     } else {
       blockInputs.forEach(function (input, index) {
         blockInputs[index].removeAttribute('required');
-
-        console.log(el);
-
       });
     }
-
   }
 
   // Проверка номера банковской карты по алгоритму Луна
@@ -209,10 +209,19 @@
       paymentCardDate.validity.valid &&
       paymentCardCVC.validity.valid &&
       paymentCardholder.validity.valid) {
-        paymentCardStatus.textContent = 'Одобрен';
+      paymentCardStatus.textContent = 'Одобрен';
     } else {
-        paymentCardStatus.textContent = 'Не определён';
+      paymentCardStatus.textContent = 'Не определён';
     }
+  }
+
+  // меняем схему проезда (карту метро) в зависимости от выбранной станции
+  function deliverStoreChangeHandler() {
+    deliverStoreList.forEach(function (radio) {
+      if (radio.checked) {
+        deliverStoreMap.src = 'img/map/' + radio.value + '.jpg';
+      }
+    });
   }
 
   // Обработчик формы оформления заказа (при клике на "Заказать")

@@ -268,28 +268,16 @@
 
     function decreaseCardBasket() {
       cardOrderCount.value = +cardOrderCount.value - 1;
-      // Показать количество товара в корзине
-
       // Обновляем количество и сумму товаров в корзине
-      basketCards.forEach(function (item) {
-        sum = sum + item.price;
-      });
-
+      sum = sum + cardOrderCount.value * parseInt(cardOrderPrice.innerHTML, 10);
       updateCardWidgetText(sum);
-
     }
 
     function increaseCardBasket() {
       cardOrderCount.value = +cardOrderCount.value + 1;
-      // Показать количество товара в корзине
-
       // Обновляем количество и сумму товаров в корзине
-      basketCards.forEach(function (item) {
-        sum = sum + item.price;
-      });
-
+      sum = sum + cardOrderCount.value * parseInt(cardOrderPrice.innerHTML, 10);
       updateCardWidgetText(sum);
-
     }
 
     //  Функция удаления товара в магазине

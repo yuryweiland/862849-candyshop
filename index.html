@@ -144,7 +144,7 @@
     <section class="buy">
       <h2 class="visually-hidden">Оформление покупки</h2>
 
-      <form method="post" enctype="multipart/form-data" autocomplete="off">
+      <form method="post" enctype="multipart/form-data" autocomplete="off" action="/">
       <section class="goods">
           <div class="goods__wrap container">
             <h2 class="group-title goods__title" id="basket">Твои покупки</h2>
@@ -180,7 +180,7 @@
                 </li>
 
                 <li class="text-input contact-data__input-wrap">
-                  <input type="tel" class="text-input__input" name="tel" id="contact-data__tel" placeholder="Телефон" minlength="11" maxlength="11" required>
+                  <input type="text" class="text-input__input" name="tel" id="contact-data__tel" placeholder="Телефон" maxlength="11" required>
                   <label for="contact-data__tel" class="text-input__label">Телефон</label>
                 </li>
 
@@ -232,7 +232,7 @@
                   </div>
                   <div class="payment__cardholder-group">
                     <p class="text-input text-input--light payment__input-wrap payment__input-wrap--cardholder">
-                      <input type="text" class="text-input__input" name="cardholder" id="payment__cardholder" placeholder="ИМЯ ДЕРЖАТЕЛЯ" pattern="[ a-zA-Z]+" minlength="4" maxlength="50">
+                      <input type="text" class="text-input__input" name="cardholder" id="payment__cardholder" placeholder="ИМЯ ДЕРЖАТЕЛЯ" pattern="[a-zA-Z]+" minlength="4" maxlength="50">
                       <label class="text-input__label" for="payment__cardholder">ИМЯ ДЕРЖАТЕЛЯ</label>
                     </p>
 
@@ -347,7 +347,7 @@
                   </li>
 
                   <li class="text-input deliver__floor">
-                    <input type="number" min="0" class="text-input__input" name="deliver-floor" id="deliver__floor" placeholder="Эт." maxlength="3">
+                    <input type="text" class="text-input__input" name="deliver-floor" id="deliver__floor" placeholder="Эт." pattern="[0-9]" maxlength="3">
                     <label class="text-input__label" for="deliver__floor">Эт.</label>
                   </li>
 

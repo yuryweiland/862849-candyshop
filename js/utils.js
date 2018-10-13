@@ -35,7 +35,7 @@
       patternMismatch: 'Формат даты должен быть мм/ГГ и состоять только из цифр',
       valueMissing: 'Обязательное поле'
     },
-    paymentСardСvc: {
+    paymentCardCVC: {
       tooShort: 'Номер CVC должен состоять из трёх цифр',
       tooLong: 'Номер CVC должен состоять из трёх цифр',
       patternMismatch: 'Поле CVC содержит только цифры (100-999)',

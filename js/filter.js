@@ -123,19 +123,19 @@
           break;
       }
 
-      if (arrFilter[i].nutritionFacts.sugar === false) {
+      if (!arrFilter[i].nutritionFacts.sugar) {
         countSugarFree += 1;
       }
-      if (arrFilter[i].nutritionFacts.vegetarian === true) {
+      if (arrFilter[i].nutritionFacts.vegetarian) {
         countVegetarian += 1;
       }
-      if (arrFilter[i].nutritionFacts.gluten === false) {
+      if (!arrFilter[i].nutritionFacts.gluten) {
         countGlutenFree += 1;
       }
       if (arrFilter[i].amount > 0) {
         countInStock += 1;
       }
-      if (arrFilterSort.prices.length !== 0) {
+      if (arrFilterSort.prices.length) {
         if (arrFilter[i].price >= arrFilterSort.prices[window.utils.MIN_INDEX] && arrFilter[i].price <= arrFilterSort.prices[window.utils.MAX_INDEX]) {
           countPrice += 1;
         }
@@ -146,7 +146,7 @@
       }
     }
 
-    for (var j = 0; j < window.catalog.favorites.length; j++) {
+    for (var j = 0; j < window.catalog.getFavorites.length; j++) {
       countFavorite += 1;
     }
 
@@ -166,20 +166,20 @@
 
   // Выводим товары по фильтрам
   function generateFilters() {
-    window.catalog.cleanCatalog();
+    window.catalog.getCleanCatalog();
     var arrayFilterGoods = [];
     // Один раз проходим по массиву объектов продуктов
     arrFilter.forEach(function (it) {
-      var emptyFilterKinds = arrFilterSort.kinds.length === 0;
+      var emptyFilterKinds = !arrFilterSort.kinds.length;
       var noEmptyFilterKinds = !emptyFilterKinds && arrFilterSort.kinds.indexOf(it.kind) !== -1;
 
-      var emptyFilterFacts = Object.keys(arrFilterSort.nutritionFacts).length === 0;
+      var emptyFilterFacts = !Object.keys(arrFilterSort.nutritionFacts).length;
       var noEmptyFilterFacts = !emptyFilterFacts && checkNutritionFacts(it.nutritionFacts);
 
-      var emptyFilterPrices = arrFilterSort.prices.length === 0;
+      var emptyFilterPrices = !arrFilterSort.prices.length;
       var noEmptyFilterPrices = !emptyFilterPrices && (it.price >= arrFilterSort.prices[window.utils.MIN_INDEX] && it.price <= arrFilterSort.prices[window.utils.MAX_INDEX]);
 
-      var emptyFilterSort = arrFilterSort.sorts.length === 0;
+      var emptyFilterSort = !arrFilterSort.sorts.length;
       var noEmptyFilterSort = !emptyFilterSort;
 
       if ((emptyFilterKinds || noEmptyFilterKinds) &&
@@ -190,24 +190,24 @@
       }
     });
     sortElements(arrayFilterGoods);
-    if (arrayFilterGoods.length === 0) {
+    if (!arrayFilterGoods.length) {
       var blockEmptyFilter = document.querySelector('#empty-filters').content.querySelector('.catalog__empty-filter');
       var emptyFilter = blockEmptyFilter.cloneNode(true);
-      window.catalog.catalogCards.appendChild(emptyFilter);
+      window.catalog.getCatalogCards.appendChild(emptyFilter);
     }
-    window.catalog.renderCatalog(arrayFilterGoods);
+    window.catalog.getRenderCatalog(arrayFilterGoods);
   }
 
   // Функция - показать всё
   function generateShowAll(element) {
     element.addEventListener('click', function (evt) {
       evt.preventDefault();
-      window.catalog.cleanCatalog();
+      window.catalog.getCleanCatalog();
       resetAllFilters();
       resetCheckbox();
       initSliderCoordinates();
       generateFilterCount();
-      window.catalog.renderCatalog(arrFilter);
+      window.catalog.getRenderCatalog(arrFilter);
     });
   }
 
@@ -239,7 +239,7 @@
   }
 
   function getFunctionsForFilters(element) {
-    window.catalog.cleanCatalog();
+    window.catalog.getCleanCatalog();
     resetAllFilters();
     resetCheckbox();
     element.checked = 'true';
@@ -248,9 +248,9 @@
   }
 
   function checkNutritionFacts(goodFact) {
-    var isSugarFactActive = arrFilterSort.nutritionFacts.sugar === false;
-    var isVegetarianFactActive = arrFilterSort.nutritionFacts.vegetarian === true;
-    var isGlutenFactActive = arrFilterSort.nutritionFacts.gluten === false;
+    var isSugarFactActive = !arrFilterSort.nutritionFacts.sugar;
+    var isVegetarianFactActive = !arrFilterSort.nutritionFacts.vegetarian;
+    var isGlutenFactActive = !arrFilterSort.nutritionFacts.gluten;
     var sugarCurrentActive = isSugarFactActive && !goodFact.sugar;
     var vegetarianCurrentActive = isVegetarianFactActive && goodFact.vegetarian;
     var glutenCurrentActive = isGlutenFactActive && !goodFact.gluten;
@@ -300,7 +300,7 @@
             break;
         }
       }
-      window.catalog.cleanCatalog();
+      window.catalog.getCleanCatalog();
       generateFilters();
     });
   }
@@ -332,7 +332,7 @@
             break;
         }
       }
-      window.catalog.cleanCatalog();
+      window.catalog.getCleanCatalog();
       generateFilters();
     });
   }
@@ -365,14 +365,14 @@
       var shiftX = evt.pageX - elMinCoords.left;
       document.addEventListener('mousemove', rangeMinMouseMoveHandler);
 
-      function rangeMinMouseMoveHandler(evt) {
+      function rangeMinMouseMoveHandler() {
         getLeftSliderCoords(evt, shiftX);
         priceMin.textContent = parseInt(min, 10);
       }
 
       document.addEventListener('mouseup', rangeMinMouseUpHandler);
 
-      function rangeMinMouseUpHandler(evt) {
+      function rangeMinMouseUpHandler() {
         getLeftSliderCoords(evt, shiftX);
         addFilterPrice(min, max);
         calculatePriceFilterMinMax(min, max);
@@ -387,8 +387,8 @@
       return false;
     }
 
-    function getLeftSliderCoords(e, shiftX) {
-      var newLeft = e.pageX - shiftX - sliderLineCoords.left;
+    function getLeftSliderCoords(evt, shiftX) {
+      var newLeft = evt.pageX - shiftX - sliderLineCoords.left;
 
       if (newLeft < window.utils.MIN) {
         newLeft = window.utils.MIN;
@@ -410,14 +410,14 @@
       var shiftX = evt.pageX - elMaxCoords.left;
       document.addEventListener('mousemove', rangeMaxMouseMoveHandler);
 
-      function rangeMaxMouseMoveHandler(evt) {
+      function rangeMaxMouseMoveHandler() {
         getRightSliderCoords(evt, shiftX);
-        priceMax.textContent = parseInt(min, 10);
+        priceMax.textContent = parseInt(max, 10);
       }
 
       document.addEventListener('mouseup', rangeMaxMouseUpHandler);
 
-      function rangeMaxMouseUpHandler(evt) {
+      function rangeMaxMouseUpHandler() {
         getRightSliderCoords(evt, shiftX);
         calculatePriceFilterMinMax(min, max);
         addFilterPrice(min, max);
@@ -463,17 +463,17 @@
     element.addEventListener('click', function () {
       if (element.checked) {
         getFunctionsForFilters(element);
-        if (window.catalog.favorites.length === 0) {
+        if (window.catalog.getFavorites.length) {
           var blockEmptyFilter = document.querySelector('#empty-filters').content.querySelector('.catalog__empty-filter');
           var emptyFilter = blockEmptyFilter.cloneNode(true);
-          window.catalog.catalogCards.appendChild(emptyFilter);
+          window.catalog.getCatalogCards.appendChild(emptyFilter);
         } else {
-          window.catalog.renderCatalog(window.catalog.favorites);
+          window.catalog.getRenderCatalog(window.catalog.getFavorites);
         }
       } else {
-        window.catalog.cleanCatalog();
+        window.catalog.getCleanCatalog();
         resetCheckbox();
-        window.catalog.renderCatalog(arrFilter);
+        window.catalog.getRenderCatalog(arrFilter);
       }
     });
   }
@@ -486,11 +486,11 @@
         var arrFilterInStocks = arrFilter.filter(function (it) {
           return it.amount !== 0;
         });
-        window.catalog.renderCatalog(arrFilterInStocks);
+        window.catalog.getRenderCatalog(arrFilterInStocks);
       } else {
-        window.catalog.cleanCatalog();
+        window.catalog.getCleanCatalog();
         resetCheckbox();
-        window.catalog.renderCatalog(arrFilter);
+        window.catalog.getRenderCatalog(arrFilter);
       }
     });
   }
@@ -516,7 +516,7 @@
       } else {
         arrFilterSort.sort = '';
       }
-      window.catalog.cleanCatalog();
+      window.catalog.getCleanCatalog();
       generateFilters();
     });
   }
@@ -567,8 +567,9 @@
   }
 
   window.filter = {
-    updateCatalog: updateCatalog,
-    generateFilters: generateFilters,
-    generateFilterCount: generateFilterCount
+    getUpdateCatalog: updateCatalog,
+    getGenerateFilters: generateFilters,
+    getGenerateFilterCount: generateFilterCount
   };
+
 })();

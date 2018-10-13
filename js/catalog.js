@@ -6,6 +6,7 @@
 
   // Массив товаров в корзине
   var basketCards = [];
+  var goodsTotal = document.querySelector('.goods__total');
 
   // Избранное
   var favorites = [];
@@ -34,7 +35,7 @@
     catalogCards.removeChild(loadData);
 
     renderCatalog(arrayGoods);
-    window.filter.updateCatalog(arrayGoods);
+    window.filter.getUpdateCatalog(arrayGoods);
   }
 
   // Функция рендера товаров
@@ -58,10 +59,10 @@
 
     modalClose.addEventListener('click', function () {
       modalError.classList.add('modal--hidden');
-      document.removeEventListener('keydown', window.modal.modalKeydownHandler);
+      document.removeEventListener('keydown', window.modal.getModalKeydownHandler);
     });
 
-    document.addEventListener('keydown', window.modal.modalKeydownHandler);
+    document.addEventListener('keydown', window.modal.getModalKeydownHandler);
   }
 
   window.backend.load('GET', onCatalogLoadSuccessHandler, onCatalogLoadErrorHandler);
@@ -106,7 +107,7 @@
       if (cardFavotireElement.classList.contains('card__btn-favorite--selected')) {
         good.favorite = true;
         favorites.push(good);
-        window.filter.generateFilterCount();
+        window.filter.getGenerateFilterCount();
       } else {
         delete good.favorite;
         favorites = [];
@@ -128,6 +129,7 @@
 
       // Если количество больше 0, то добавляем товар в корзину
       if (good.amount > 0) {
+        goodsTotal.classList.remove('visually-hidden');
 
         // Если товар уже содержится в корзине, увеличиваем количество товара
         var isContains = contains(basketCards, goodCard);
@@ -151,8 +153,8 @@
 
         // При уменьшении количества генерируем показатель товара
       }
-      window.filter.generateFilterCount();
-      window.filter.generateFilters();
+      window.filter.getGenerateFilterCount();
+      window.filter.getGenerateFilters();
 
       showBasket(basketCards, goodsCards, addElementsCard);
     }
@@ -191,12 +193,19 @@
 
   showGoods(renderGood, catalogCards);
 
-  // Добавить количество ззаказа в header
+  // Добавить количество заказа в header
   function getCountBasket(basket) {
     var basketCountOrder = 0;
     for (var m = 0; m < basket.length; m++) {
       basketCountOrder += basket[m].orderedAmount;
     }
+
+    if (basketCountOrder) {
+      goodsTotal.classList.remove('visually-hidden');
+    } else {
+      goodsTotal.classList.add('visually-hidden');
+    }
+
     return basketCountOrder;
   }
 
@@ -363,11 +372,12 @@
   document.body.append(loader);
 
   window.catalog = {
-    renderCatalog: renderCatalog,
-    arrayGoods: arrayGoods,
-    cleanCatalog: cleanCatalog,
-    catalogCards: catalogCards,
-    favorites: favorites
+    getRenderCatalog: renderCatalog,
+    getArrayGoods: arrayGoods,
+    getCleanCatalog: cleanCatalog,
+    getCatalogCards: catalogCards,
+    getFavorites: favorites,
+    getBasketCards: basketCards
   };
 
 })();

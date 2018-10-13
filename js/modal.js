@@ -12,7 +12,7 @@
   }
 
   window.modal = {
-    modalKeydownHandler: modalKeydownHandler
+    getModalKeydownHandler: modalKeydownHandler
   };
 
 })();

@@ -713,7 +713,6 @@ body {
   align-items: baseline;
 }
 .goods__total-count {
-  display: flex;
   align-items: baseline;
   font-size: 24px;
   line-height: 40px;

@@ -8,6 +8,11 @@
   var basketCards = [];
 
   var goodsTotal = document.querySelector('.goods__total');
+  var goodsTotalCounter = document.querySelector('.goods__total-counter');
+  var goodsTotalWord = document.querySelector('.goods__total-word');
+  var goodsTotalPriceText = document.querySelector('.goods__price');
+  var goodsTotalPrice = window.utils.GOODS_TOTAL_PRICE;
+
   var buyButton = document.querySelector('.buy__submit-btn');
 
   // Избранное
@@ -152,8 +157,10 @@
           sum = sum + card.price;
         });
 
+        goodsTotalPrice = sum;
+
         // Отображаем текущее кол-во товаров в корзине
-        updateCardWidgetText(sum);
+        updateCardWidgetText(goodsTotalPrice);
 
         // Уменьшаем на 1 кол-во товара в наличии при добавлении товара в корзину
         good.amount--;
@@ -212,6 +219,8 @@
     } else {
       goodsTotal.classList.add('visually-hidden');
     }
+
+
 
     window.checkout.disableFormInputs(window.checkout.getContactData, !basketCards.length);
     window.checkout.disableFormInputs(window.checkout.getPaymentCard, !basketCards.length);
@@ -297,23 +306,24 @@
 
     var btnDecrease = cardElement.querySelector('.card-order__btn--decrease');
     var btnIncrease = cardElement.querySelector('.card-order__btn--increase');
-    var sum = 0;
 
     btnDecrease.addEventListener('click', decreaseCardBasket);
     btnIncrease.addEventListener('click', increaseCardBasket);
 
     function decreaseCardBasket() {
-      cardOrderCount.value = +cardOrderCount.value - 1;
-      // Обновляем количество и сумму товаров в корзине
-      sum = sum - (parseInt(cardOrderPrice.innerHTML, 10));
-      updateCardWidgetText(sum);
+      if (+cardOrderCount.value > 1) {
+        cardOrderCount.value = +cardOrderCount.value - 1;
+        // Обновляем количество и сумму товаров в корзине
+        goodsTotalPrice = goodsTotalPrice - (parseInt(cardOrderPrice.innerHTML, 10));
+        updateCardWidgetText(goodsTotalPrice);
+      }
     }
 
     function increaseCardBasket() {
       cardOrderCount.value = +cardOrderCount.value + 1;
       // Обновляем количество и сумму товаров в корзине
-      sum = sum + (parseInt(cardOrderPrice.innerHTML, 10));
-      updateCardWidgetText(sum);
+      goodsTotalPrice = goodsTotalPrice + (parseInt(cardOrderPrice.innerHTML, 10));
+      updateCardWidgetText(goodsTotalPrice);
     }
 
     //  Функция удаления товара в магазине
@@ -346,7 +356,11 @@
       wordCase = 'товаров';
     }
 
-    cardWidget.textContent = getCountBasket(basketCards) > 0 ? 'В корзине ' + count + ' ' + wordCase + ' на ' + sum + '₽' : 'В корзине ничего нет';
+    cardWidget.textContent = getCountBasket(basketCards) > 0 ? 'В корзине ' + count + ' ' + wordCase + ' на ' + sum + ' ₽' : 'В корзине ничего нет';
+    goodsTotalPrice = sum;
+    goodsTotalCounter.textContent = count;
+    goodsTotalPriceText.textContent = sum + ' ₽';
+    goodsTotalWord.textContent = wordCase;
   }
 
 
@@ -364,13 +378,16 @@
 
         // Обновляем количество и сумму товаров в корзине
         basket.forEach(function (item) {
-          sum = sum + item.price;
+          sum = sum + (item.price * item.orderedAmount);
         });
 
-        updateCardWidgetText(sum);
+        goodsTotalPrice = sum;
+
+        updateCardWidgetText(goodsTotalPrice);
 
         // Прибавляем элементу количество
-        // good.amount += good.orderedAmount;
+        good.amount += good.orderedAmount;
+
         isEmptyHeaderBasket();
         isEmptyBasket();
       }

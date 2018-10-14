@@ -650,6 +650,9 @@ body {
   background-color: #8ef202;
   transition: background-color 0.2s ease
 }
+.card--little .card__btn {
+  background-color: #ff481c;
+}
 .card--little .card__btn:hover {
   background-color: #ff481c;
   transition: background-color 0.2s ease;
@@ -659,6 +662,10 @@ body {
   transition: background-color 0.2s ease
 }
 .card--soon .card__btn {
+  background-color: #e8e8e8;
+  cursor: default;
+}
+.card--soon .card__btn:hover {
   background-color: #e8e8e8;
   cursor: default;
 }

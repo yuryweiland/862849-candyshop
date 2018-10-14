@@ -463,7 +463,7 @@
     element.addEventListener('click', function () {
       if (element.checked) {
         getFunctionsForFilters(element);
-        if (window.catalog.getFavorites.length) {
+        if (!window.catalog.getFavorites.length) {
           var blockEmptyFilter = document.querySelector('#empty-filters').content.querySelector('.catalog__empty-filter');
           var emptyFilter = blockEmptyFilter.cloneNode(true);
           window.catalog.getCatalogCards.appendChild(emptyFilter);

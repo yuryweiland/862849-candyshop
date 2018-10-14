@@ -135,7 +135,7 @@
       goodsCardEmpty.classList.add('visually-hidden');
 
       // Если количество больше 0, то добавляем товар в корзину
-      if (good.amount > 0) {
+      if (good.amount > 0 && good.amount > 0) {
         goodsTotal.classList.remove('visually-hidden');
 
         // Если товар уже содержится в корзине, увеличиваем количество товара

@@ -220,8 +220,6 @@
       goodsTotal.classList.add('visually-hidden');
     }
 
-
-
     window.checkout.disableFormInputs(window.checkout.getContactData, !basketCards.length);
     window.checkout.disableFormInputs(window.checkout.getPaymentCard, !basketCards.length);
     window.checkout.disableFormInputs(window.checkout.getPaymentCash, !basketCards.length);

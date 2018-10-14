@@ -154,7 +154,7 @@
         }
 
         basketCards.forEach(function (card) {
-          sum = sum + card.price;
+          sum = sum + (card.price * card.orderedAmount);
         });
 
         goodsTotalPrice = sum;

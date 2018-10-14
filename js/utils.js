@@ -1,13 +1,13 @@
 'use strict';
 
 (function () {
-  var RATING_ARRAY = [
-    'stars__rating--one',
-    'stars__rating--two',
-    'stars__rating--three',
-    'stars__rating--four',
-    'stars__rating--five'
-  ];
+  var ProductRating = {
+    ONE: 'stars__rating--one',
+    TWO: 'stars__rating--two',
+    THREE: 'stars__rating--three',
+    FOUR: 'stars__rating--four',
+    FIVE: 'stars__rating--five'
+  };
 
   var MessageErrors = {
     CONTACT_DATA_NAME: {
@@ -83,7 +83,6 @@
   var GOODS_TOTAL_PRICE = 0;
 
   window.utils = {
-    RATING_ARRAY: RATING_ARRAY,
     CATALOG_LENGTH_GOODS: CATALOG_LENGTH_GOODS,
     GOODS_TOTAL_PRICE: GOODS_TOTAL_PRICE,
     MIN: MIN,
@@ -92,6 +91,7 @@
     SLIDER_LINE_CONTROL_WIDTH: SLIDER_LINE_CONTROL_WIDTH,
     MIN_INDEX: MIN_INDEX,
     MAX_INDEX: MAX_INDEX,
+    ProductRating: ProductRating,
     MessageErrors: MessageErrors
   };
 

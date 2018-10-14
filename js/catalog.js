@@ -100,7 +100,25 @@
 
     // Добавляем класс рейтинга в зависимоти от значения
     starsRating.classList.remove('stars__rating--five');
-    starsRating.classList.add(window.utils.RATING_ARRAY[good.rating.value + 1]);
+
+    // Проставляем css-классы для рейтинга в зависимости от рейтинга товара
+    switch (good.rating.value) {
+      case 1:
+        starsRating.classList.add(window.utils.ProductRating.ONE);
+        break;
+      case 2:
+        starsRating.classList.add(window.utils.ProductRating.TWO);
+        break;
+      case 3:
+        starsRating.classList.add(window.utils.ProductRating.THREE);
+        break;
+      case 4:
+        starsRating.classList.add(window.utils.ProductRating.FOUR);
+        break;
+      case 5:
+        starsRating.classList.add(window.utils.ProductRating.FIVE);
+        break;
+    }
 
     // Рейтинг
     starCount.textContent = good.rating.number;

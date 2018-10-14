@@ -117,10 +117,6 @@
   }
 
   function getCustomErrors(el, obj) {
-
-    console.log('el', el);
-    console.log('obj', obj);
-
     if (el.validity.tooShort) {
       el.setCustomValidity(obj.tooShort);
     } else if (el.validity.tooLong) {

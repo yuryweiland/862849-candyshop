@@ -232,7 +232,7 @@
     sliderFillLine.style.left = window.utils.MIN + 'px';
     sliderFillLine.style.right = window.utils.ELEMENT_WIDTH - window.utils.MAX + 'px';
     rangeMin.style.left = window.utils.MIN + 'px';
-    rangeMax.style.left = window.utils.MAX + 'px';
+    rangeMax.style.left = window.utils.MAX - window.utils.SLIDER_LINE_CONTROL_WIDTH + 'px';
     min = window.utils.MIN;
     max = window.utils.MAX;
     calculatePriceFilterMinMax(min, max);
@@ -358,44 +358,38 @@
     rangeMin.addEventListener('mousedown', rangeMinMouseDownHandler);
     rangeMax.addEventListener('mousedown', rangeMaxMouseDownHandler);
 
-    function rangeMinMouseDownHandler(evt) {
-      // Выведем текущее координатное значение ползунка
-      var elMinCoords = getCoords(rangeMin);
-      // MouseEvent.pageX - возвращает значение равное горизонтальной координате, относительно всего документа
-      var shiftX = evt.pageX - elMinCoords.left;
+    function rangeMinMouseDownHandler() {
       document.addEventListener('mousemove', rangeMinMouseMoveHandler);
-
-      function rangeMinMouseMoveHandler(evt) {
-        getLeftSliderCoords(evt, shiftX);
-        priceMin.textContent = parseInt(min, 10);
-      }
-
       document.addEventListener('mouseup', rangeMinMouseUpHandler);
-
-      function rangeMinMouseUpHandler(evt) {
-        getLeftSliderCoords(evt, shiftX);
-        addFilterPrice(min, max);
-        calculatePriceFilterMinMax(min, max);
-
-        document.removeEventListener('mousemove', rangeMinMouseMoveHandler);
-        document.removeEventListener('mouseup', rangeMinMouseUpHandler);
-
-        generateFilters();
-        generateFilterCount();
-      }
-
       return false;
     }
 
-    function getLeftSliderCoords(evt, shiftX) {
-      var newLeft = evt.pageX - shiftX - sliderLineCoords.left;
+    function rangeMinMouseMoveHandler(evt) {
+      getLeftSliderCoords(evt);
+      priceMin.textContent = parseInt(min, 10);
+    }
+
+    function rangeMinMouseUpHandler(evt) {
+      getLeftSliderCoords(evt);
+      addFilterPrice(min, max);
+      calculatePriceFilterMinMax(min, max);
+
+      document.removeEventListener('mousemove', rangeMinMouseMoveHandler);
+      document.removeEventListener('mouseup', rangeMinMouseUpHandler);
+
+      generateFilters();
+      generateFilterCount();
+    }
+
+    function getLeftSliderCoords(evt) {
+      var newLeft = evt.pageX - sliderLineCoords.left;
 
       if (newLeft < window.utils.MIN) {
         newLeft = window.utils.MIN;
       }
 
-      if (newLeft > max - rangeMin.offsetWidth / 2) {
-        newLeft = max - rangeMin.offsetWidth / 2;
+      if (newLeft > max - rangeMin.offsetWidth) {
+        newLeft = max - rangeMin.offsetWidth;
       }
 
       min = newLeft;
@@ -403,44 +397,39 @@
       sliderFillLine.style.left = (newLeft + rangeMin.offsetWidth / 2) + 'px';
     }
 
-    function rangeMaxMouseDownHandler(evt) {
-      // Выведем текущее координатное значение ползунка
-      var elMaxCoords = getCoords(rangeMax);
-      // MouseEvent.pageX - возвращает значение равное горизонтальной координате, относительно всего документа
-      var shiftX = evt.pageX - elMaxCoords.left;
+    function rangeMaxMouseDownHandler() {
       document.addEventListener('mousemove', rangeMaxMouseMoveHandler);
-
-      function rangeMaxMouseMoveHandler(evt) {
-        getRightSliderCoords(evt, shiftX);
-        priceMax.textContent = parseInt(max, 10);
-      }
-
       document.addEventListener('mouseup', rangeMaxMouseUpHandler);
-
-      function rangeMaxMouseUpHandler(evt) {
-        getRightSliderCoords(evt, shiftX);
-        calculatePriceFilterMinMax(min, max);
-        addFilterPrice(min, max);
-
-        document.removeEventListener('mousemove', rangeMaxMouseMoveHandler);
-        document.removeEventListener('mouseup', rangeMaxMouseUpHandler);
-
-        generateFilters();
-        generateFilterCount();
-      }
-
       return false;
     }
 
-    function getRightSliderCoords(evt, shiftX) {
-      var newRight = evt.pageX - shiftX - sliderLineCoords.left;
+    function rangeMaxMouseMoveHandler(evt) {
+      getRightSliderCoords(evt);
+      addFilterPrice(min, max);
+      calculatePriceFilterMinMax(min, max);
+    }
 
-      if (newRight > window.utils.MAX) {
-        newRight = window.utils.MAX;
+    function rangeMaxMouseUpHandler(evt) {
+      getRightSliderCoords(evt);
+      calculatePriceFilterMinMax(min, max);
+      addFilterPrice(min, max);
+
+      document.removeEventListener('mousemove', rangeMaxMouseMoveHandler);
+      document.removeEventListener('mouseup', rangeMaxMouseUpHandler);
+
+      generateFilters();
+      generateFilterCount();
+    }
+
+    function getRightSliderCoords(evt) {
+      var newRight = evt.pageX - sliderLineCoords.left;
+
+      if (newRight > window.utils.MAX - window.utils.SLIDER_LINE_CONTROL_WIDTH) {
+        newRight = window.utils.MAX - window.utils.SLIDER_LINE_CONTROL_WIDTH;
       }
 
-      if (newRight < min + rangeMin.offsetWidth / 2) {
-        newRight = min + rangeMin.offsetWidth / 2;
+      if (newRight < min - window.utils.SLIDER_LINE_CONTROL_WIDTH + rangeMin.offsetWidth) {
+        newRight = min - window.utils.SLIDER_LINE_CONTROL_WIDTH + rangeMin.offsetWidth;
       }
 
       max = newRight;

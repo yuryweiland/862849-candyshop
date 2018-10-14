@@ -35,10 +35,13 @@
       case 'payment__card':
         paymentCash.classList.add('visually-hidden');
         paymentCard.classList.remove('visually-hidden');
+        setDisabledInputs(paymentCash, true);
+        setRequiredInputs(paymentCard, true);
         break;
       case 'payment__cash':
         paymentCash.classList.remove('visually-hidden');
         paymentCard.classList.add('visually-hidden');
+        setDisabledInputs(paymentCard, true);
         break;
     }
   }
@@ -56,10 +59,14 @@
       case 'deliver__store':
         deliverStore.classList.remove('visually-hidden');
         deliverCourier.classList.add('visually-hidden');
+        setDisabledInputs(deliverCourier, true);
+        setRequiredInputs(deliverStore, true);
         break;
       case 'deliver__courier':
         deliverStore.classList.add('visually-hidden');
         deliverCourier.classList.remove('visually-hidden');
+        setDisabledInputs(deliverStore, true);
+        setRequiredInputs(deliverCourier, true);
         break;
     }
   }
@@ -79,9 +86,7 @@
 
     if (bool) {
       blockInputs.forEach(function (input, index) {
-        if (blockInputs[index].id !== 'deliver__floor') {
-          blockInputs[index].setAttribute('required', '');
-        }
+        blockInputs[index].setAttribute('required', '');
       });
     } else {
       blockInputs.forEach(function (input, index) {

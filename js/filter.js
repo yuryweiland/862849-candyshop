@@ -388,8 +388,8 @@
         newLeft = window.utils.MIN;
       }
 
-      if (newLeft > max - rangeMin.offsetWidth) {
-        newLeft = max - rangeMin.offsetWidth;
+      if (newLeft > max + window.utils.SLIDER_LINE_CONTROL_WIDTH - rangeMin.offsetWidth) {
+        newLeft = max + window.utils.SLIDER_LINE_CONTROL_WIDTH - rangeMin.offsetWidth;
       }
 
       min = newLeft;

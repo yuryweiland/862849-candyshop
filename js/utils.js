@@ -2,11 +2,11 @@
 
 (function () {
   var ProductRating = {
-    ONE: 'stars__rating--one',
-    TWO: 'stars__rating--two',
-    THREE: 'stars__rating--three',
-    FOUR: 'stars__rating--four',
-    FIVE: 'stars__rating--five'
+    1: 'stars__rating--one',
+    2: 'stars__rating--two',
+    3: 'stars__rating--three',
+    4: 'stars__rating--four',
+    5: 'stars__rating--five'
   };
 
   var MessageErrors = {

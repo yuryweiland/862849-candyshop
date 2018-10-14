@@ -6,7 +6,9 @@
 
   // Массив товаров в корзине
   var basketCards = [];
+
   var goodsTotal = document.querySelector('.goods__total');
+  var buyButton = document.querySelector('.buy__submit-btn');
 
   // Избранное
   var favorites = [];
@@ -26,6 +28,11 @@
   var goodElements = document.querySelector('#card').content.querySelector('.catalog__card');
 
   var cardWidget = document.querySelector('.main-header__basket');
+
+  // Устанавливаем состояние disabled кнопки "Заказать"
+  function setBuyButtonState() {
+    buyButton.disabled = !basketCards.length;
+  }
 
   // Обработчик при успешной загрузке товаров с сервера
   function onCatalogLoadSuccessHandler(dataCards) {
@@ -193,7 +200,7 @@
 
   showGoods(renderGood, catalogCards);
 
-  // Добавить количество заказа в header
+  // Обновляем кол-во товаров в корзине и устанавливем парметры формы заказа
   function getCountBasket(basket) {
     var basketCountOrder = 0;
     for (var m = 0; m < basket.length; m++) {
@@ -204,6 +211,26 @@
       goodsTotal.classList.remove('visually-hidden');
     } else {
       goodsTotal.classList.add('visually-hidden');
+    }
+
+    window.checkout.disableFormInputs(window.checkout.getContactData, !basketCards.length);
+    window.checkout.disableFormInputs(window.checkout.getPaymentCard, !basketCards.length);
+    window.checkout.disableFormInputs(window.checkout.getPaymentCash, !basketCards.length);
+    window.checkout.disableFormInputs(window.checkout.getDeliverStore, !basketCards.length);
+    window.checkout.disableFormInputs(window.checkout.getDeliverCourier, !basketCards.length);
+    setBuyButtonState();
+
+    if (basketCards.length && window.checkout.paymentMethod === 'payment__card') {
+      window.checkout.requireFormInputs(window.checkout.getPaymentCard, true);
+
+    } else if (basketCards.length && window.checkout.paymentMethod === 'payment__cash') {
+      window.checkout.requireFormInputs(window.checkout.getPaymentCash, true);
+
+    } else if (basketCards.length && window.checkout.deliverMethod === 'deliver__store') {
+      window.checkout.requireFormInputs(window.checkout.getDeliverStore, true);
+
+    } else if (basketCards.length && window.checkout.deliverMethod === 'deliver__courier') {
+      window.checkout.requireFormInputs(window.checkout.getDeliverCourier, true);
     }
 
     return basketCountOrder;
@@ -376,8 +403,7 @@
     getArrayGoods: arrayGoods,
     getCleanCatalog: cleanCatalog,
     getCatalogCards: catalogCards,
-    getFavorites: favorites,
-    getBasketCards: basketCards
+    getFavorites: favorites
   };
 
 })();

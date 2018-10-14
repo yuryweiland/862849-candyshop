@@ -9,10 +9,7 @@
   var deliverStoreList = document.querySelector('.deliver__store-list').querySelectorAll('input');
   var deliverStoreMap = document.querySelector('.deliver__store-map-img');
   var deliverCourier = document.querySelector('.deliver__courier');
-  var buyButton = document.querySelector('.buy__submit-btn');
-
   var contactData = document.querySelector('.contact-data__inner');
-  contactData.addEventListener('click', contactDataFormClickHandler);
 
   // Переключение вкладок в форме оформления заказа
   var payment = document.querySelector('.payment__inner');
@@ -25,10 +22,6 @@
     el.addEventListener('change', deliverStoreChangeHandler);
   });
 
-  function contactDataFormClickHandler() {
-    setDisabledInputs(contactData, !window.catalog.getBasketCards.length);
-  }
-
   // Обработчик клика по вкладкам в блоке "Оплата"
   function paymentFormClickHandler(evt) {
     var target = evt.target;
@@ -37,22 +30,16 @@
       return;
     }
     selectedPaymentMethod = target.getAttribute('id');
-    setBuyButtonState();
 
-    if (!window.catalog.getBasketCards.length) {
-      setDisabledInputs(paymentCard, true);
-      setDisabledInputs(paymentCash, true);
-
-    } else if (window.catalog.getBasketCards.length && selectedPaymentMethod === 'payment__card') {
-      document.querySelector('.' + selectedPaymentMethod).classList.remove('visually-hidden');
-      paymentCash.classList.add('visually-hidden');
-      setDisabledInputs(paymentCard, false);
-      setRequiredInputs(paymentCard, true);
-
-    } else if (window.catalog.getBasketCards.length && selectedPaymentMethod === 'payment__cash') {
-      document.querySelector('.' + selectedPaymentMethod).classList.remove('visually-hidden');
-      paymentCard.classList.add('visually-hidden');
-      setDisabledInputs(paymentCard, true);
+    switch (selectedPaymentMethod) {
+      case 'payment__card':
+        paymentCash.classList.add('visually-hidden');
+        paymentCard.classList.remove('visually-hidden');
+        break;
+      case 'payment__cash':
+        paymentCash.classList.remove('visually-hidden');
+        paymentCard.classList.add('visually-hidden');
+        break;
     }
   }
 
@@ -63,27 +50,17 @@
     if (!inputClass) {
       return;
     }
-
     selectedDeliverMethod = target.getAttribute('id');
-    setBuyButtonState();
 
-    if (!window.catalog.getBasketCards.length) {
-      setDisabledInputs(deliverStore, true);
-      setDisabledInputs(deliverCourier, true);
-
-    } else if (window.catalog.getBasketCards.length && selectedDeliverMethod === 'deliver__store') {
-      document.querySelector('.' + selectedDeliverMethod).classList.remove('visually-hidden');
-      deliverCourier.classList.add('visually-hidden');
-      setDisabledInputs(deliverStore, false);
-      setDisabledInputs(deliverCourier, true);
-      setRequiredInputs(deliverStore, true);
-
-    } else if (window.catalog.getBasketCards.length && selectedDeliverMethod === 'deliver__courier') {
-      document.querySelector('.' + selectedDeliverMethod).classList.remove('visually-hidden');
-      deliverStore.classList.add('visually-hidden');
-      setDisabledInputs(deliverStore, true);
-      setDisabledInputs(deliverCourier, false);
-      setRequiredInputs(deliverCourier, true);
+    switch (selectedDeliverMethod) {
+      case 'deliver__store':
+        deliverStore.classList.remove('visually-hidden');
+        deliverCourier.classList.add('visually-hidden');
+        break;
+      case 'deliver__courier':
+        deliverStore.classList.add('visually-hidden');
+        deliverCourier.classList.remove('visually-hidden');
+        break;
     }
   }
 
@@ -94,10 +71,6 @@
     blockInputs.forEach(function (input, index) {
       blockInputs[index].disabled = bool;
     });
-  }
-
-  function setBuyButtonState() {
-    buyButton.disabled = !window.catalog.getBasketCards.length;
   }
 
   // Устанавливаем обязательные поля у выбранных вариантов доставки и оплаты
@@ -290,15 +263,22 @@
   });
 
   // Выставляем input-полям неактивных способов доставк и оплаты св-во disabled
-  setDisabledInputs(paymentCard, false);
+  setDisabledInputs(paymentCard, true);
   setDisabledInputs(paymentCash, true);
-  setDisabledInputs(deliverStore, false);
+  setDisabledInputs(deliverStore, true);
   setDisabledInputs(deliverCourier, true);
   setDisabledInputs(contactData, true);
-  setBuyButtonState();
 
-  // Выставляем input-полям активных способов доставк и оплаты св-во required
-  setRequiredInputs(paymentCard, true);
-  setRequiredInputs(deliverStore, true);
+  window.checkout = {
+    paymentMethod: selectedPaymentMethod,
+    deliverMethod: selectedDeliverMethod,
+    getPaymentCard: paymentCard,
+    getPaymentCash: paymentCash,
+    getDeliverStore: deliverStore,
+    getDeliverCourier: deliverCourier,
+    getContactData: contactData,
+    disableFormInputs: setDisabledInputs,
+    requireFormInputs: setRequiredInputs
+  };
 
 })();

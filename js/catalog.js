@@ -203,9 +203,10 @@
     });
 
     catalog.appendChild(fragment);
-  }
 
-  showGoods(renderGood, catalogCards);
+    // Устанавливаем состояние disabled для кнопки "Закзать"
+    setBuyButtonState();
+  }
 
   // Обновляем кол-во товаров в корзине и устанавливем парметры формы заказа
   function getCountBasket(basket) {
@@ -412,6 +413,9 @@
   var loader = document.createElement('script');
   loader.src = window.backend.DATA_URL + '?callback=' + window.backend.CALLBACK_NAME;
   document.body.append(loader);
+
+  // Отображаем товары каталога при запуске
+  showGoods(renderGood, catalogCards);
 
   window.catalog = {
     getRenderCatalog: renderCatalog,

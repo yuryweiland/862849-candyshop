@@ -151,34 +151,34 @@
 
     switch (target) {
       case contactDataName:
-        getCustomErrors(contactDataName, window.utils.MESSAGE_ERRORS['contactDataName']);
+        getCustomErrors(contactDataName, window.utils.MessageErrors.CONTACT_DATA_NAME);
         break;
       case contactDataTel:
-        getCustomErrors(contactDataTel, window.utils.MESSAGE_ERRORS['contactDataTel']);
+        getCustomErrors(contactDataTel, window.utils.MessageErrors.CONTACT_DATA_TEL);
         break;
       case paymentCardNumber:
-        getCustomErrors(paymentCardNumber, window.utils.MESSAGE_ERRORS['paymentCardNumber']);
+        getCustomErrors(paymentCardNumber, window.utils.MessageErrors.PAYMENT_CARD_NUMBER);
         break;
       case paymentCardDate:
-        getCustomErrors(paymentCardDate, window.utils.MESSAGE_ERRORS['paymentCardDate']);
+        getCustomErrors(paymentCardDate, window.utils.MessageErrors.PAYMENT_CARD_DATE);
         break;
       case paymentCardCVC:
-        getCustomErrors(paymentCardCVC, window.utils.MESSAGE_ERRORS['paymentCardCVC']);
+        getCustomErrors(paymentCardCVC, window.utils.MessageErrors.PAYMENT_CARD_CVC);
         break;
       case paymentCardholder:
-        getCustomErrors(paymentCardholder, window.utils.MESSAGE_ERRORS['paymentCardholder']);
+        getCustomErrors(paymentCardholder, window.utils.MessageErrors.PAYMENT_CARD_HOLDER);
         break;
       case deliverStreet:
-        getCustomErrors(deliverStreet, window.utils.MESSAGE_ERRORS['deliverStreet']);
+        getCustomErrors(deliverStreet, window.utils.MessageErrors.DELIVER_STREET);
         break;
       case deliverHouse:
-        getCustomErrors(deliverHouse, window.utils.MESSAGE_ERRORS['deliverHouse']);
+        getCustomErrors(deliverHouse, window.utils.MessageErrors.DELIVER_HOUSE);
         break;
       case deliverFloor:
-        getCustomErrors(deliverFloor, window.utils.MESSAGE_ERRORS['deliverFloor']);
+        getCustomErrors(deliverFloor, window.utils.MessageErrors.DELIVER_FLOOR);
         break;
       case deliverRoom:
-        getCustomErrors(deliverRoom, window.utils.MESSAGE_ERRORS['deliverRoom']);
+        getCustomErrors(deliverRoom, window.utils.MessageErrors.DELIVER_ROOM);
         break;
       default:
         break;

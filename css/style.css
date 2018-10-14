@@ -896,12 +896,16 @@ body {
 .buy__submit-btn:hover {
   background-color: #6e58d9;
   transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 .buy__submit-btn:focus {
   background-color: #8269ff;
   transition: background-color 0.2s ease;
 }
-
+.buy__submit-btn:disabled {
+  background-color: #c0c0c0;
+  cursor: default;
+}
 /*order*/
 
 .order__title-wrap {

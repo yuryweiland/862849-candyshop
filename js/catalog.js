@@ -2,7 +2,7 @@
 
 (function () {
   // Массив товаров
-  var products = [];
+  var arrayGoods = [];
 
   // Массив товаров в корзине
   var basketCards = [];
@@ -19,15 +19,15 @@
   var favorites = [];
 
   // Убираем у блока catalog__cards класс catalog__cards--load
-  var cards = document.querySelector('.catalog__cards');
-  cards.classList.remove('catalog__cards--load');
+  var catalogCards = document.querySelector('.catalog__cards');
+  catalogCards.classList.remove('catalog__cards--load');
 
   // Добавлением класса visually-hidden блок catalog__load
   var catalogLoad = document.querySelector('.catalog__load');
   catalogLoad.parentNode.removeChild(catalogLoad);
 
   var loadData = document.querySelector('#load-data').content.querySelector('.catalog__load');
-  cards.appendChild(loadData);
+  catalogCards.appendChild(loadData);
 
   // Находим шаблон, который будем копировать
   var goodElements = document.querySelector('#card').content.querySelector('.catalog__card');
@@ -41,22 +41,22 @@
 
   // Обработчик при успешной загрузке товаров с сервера
   function onCatalogLoadSuccessHandler(dataCards) {
-    products = JSON.parse(dataCards);
+    arrayGoods = JSON.parse(dataCards);
 
-    cards.classList.remove('catalog__cards--load');
-    cards.removeChild(loadData);
+    catalogCards.classList.remove('catalog__cards--load');
+    catalogCards.removeChild(loadData);
 
-    render(products);
-    window.filter.getUpdateCatalog(products);
+    renderCatalog(arrayGoods);
+    window.filter.getUpdateCatalog(arrayGoods);
   }
 
   // Функция рендера товаров
-  function render(goods) {
+  function renderCatalog(goods) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < goods.length; i++) {
       fragment.appendChild(renderGood(goods[i]));
     }
-    cards.appendChild(fragment);
+    catalogCards.appendChild(fragment);
   }
 
   // Обработчик при неудачной загрузке товаров с сервера (выкидываем модалку пользователю)
@@ -71,10 +71,10 @@
 
     modalClose.addEventListener('click', function () {
       modalError.classList.add('modal--hidden');
-      document.removeEventListener('keydown', window.modal.getModalKeydownHandler);
+      document.removeEventListener('keydown', window.modal.keydownHandler);
     });
 
-    document.addEventListener('keydown', window.modal.getModalKeydownHandler);
+    document.addEventListener('keydown', window.modal.keydownHandler);
   }
 
   window.backend.load('GET', onCatalogLoadSuccessHandler, onCatalogLoadErrorHandler);
@@ -102,7 +102,7 @@
     starsRating.classList.remove('stars__rating--five');
 
     // Проставляем css-классы для рейтинга в зависимости от рейтинга товара
-    starsRating.classList.add(window.utils.ProductRating[good.rating.value + 1]);
+    starsRating.classList.add(window.utils.ProductRating[good.rating.value]);
 
     // Рейтинг
     starCount.textContent = good.rating.number;
@@ -121,7 +121,7 @@
       if (cardFavotireElement.classList.contains('card__btn-favorite--selected')) {
         good.favorite = true;
         favorites.push(good);
-        window.filter.getGenerateFilterCount();
+        window.filter.generateCount();
       } else {
         delete good.favorite;
         favorites = [];
@@ -169,8 +169,8 @@
 
         // При уменьшении количества генерируем показатель товара
       }
-      window.filter.getGenerateFilterCount();
-      window.filter.getGenerateFilters();
+      window.filter.generateCount();
+      window.filter.generate();
 
       showBasket(basketCards, goodsCards, addElementsCard);
     }
@@ -200,8 +200,8 @@
   function showGoods(callback, catalog) {
     var fragment = document.createDocumentFragment();
 
-    products.forEach(function (good, index) {
-      fragment.appendChild(callback(products[index]));
+    arrayGoods.forEach(function (good, index) {
+      fragment.appendChild(callback(arrayGoods[index]));
     });
 
     catalog.appendChild(fragment);
@@ -273,9 +273,9 @@
   }
 
   // Очищаю товары в каталоге перед следующим рендерингом
-  function clean() {
-    while (cards.firstChild) {
-      cards.removeChild(cards.firstChild);
+  function cleanCatalog() {
+    while (catalogCards.firstChild) {
+      catalogCards.removeChild(catalogCards.firstChild);
     }
   }
 
@@ -417,13 +417,13 @@
   document.body.append(loader);
 
   // Отображаем товары каталога при запуске
-  showGoods(renderGood, cards);
+  showGoods(renderGood, catalogCards);
 
   window.catalog = {
-    getRenderCatalog: render,
-    getProducts: products,
-    getCleanCatalog: clean,
-    getCatalogCards: cards,
+    render: renderCatalog,
+    goods: arrayGoods,
+    clean: cleanCatalog,
+    cards: catalogCards,
     getFavorites: favorites
   };
 

@@ -81,6 +81,7 @@
   var SLIDER_LINE_CONTROL_WIDTH = 10;
   var CATALOG_LENGTH_GOODS = 26;
   var GOODS_TOTAL_PRICE = 0;
+  var ESC_KEYCODE = 27;
 
   window.utils = {
     CATALOG_LENGTH_GOODS: CATALOG_LENGTH_GOODS,
@@ -91,6 +92,7 @@
     SLIDER_LINE_CONTROL_WIDTH: SLIDER_LINE_CONTROL_WIDTH,
     MIN_INDEX: MIN_INDEX,
     MAX_INDEX: MAX_INDEX,
+    ESC_KEYCODE: ESC_KEYCODE,
     ProductRating: ProductRating,
     MessageErrors: MessageErrors
   };

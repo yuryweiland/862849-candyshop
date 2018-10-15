@@ -252,7 +252,7 @@
       modalError.classList.add('modal--hidden');
     });
 
-    document.addEventListener('keydown', window.modal.getModalKeydownHandler);
+    document.addEventListener('keydown', window.modal.keydownHandler);
   }
 
   form.addEventListener('submit', function (evt) {

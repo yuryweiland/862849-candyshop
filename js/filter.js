@@ -166,7 +166,7 @@
 
   // Выводим товары по фильтрам
   function generateFilters() {
-    window.catalog.getCleanCatalog();
+    window.catalog.clean();
     var arrayFilterGoods = [];
     // Один раз проходим по массиву объектов продуктов
     arrFilter.forEach(function (it) {
@@ -193,21 +193,21 @@
     if (!arrayFilterGoods.length) {
       var blockEmptyFilter = document.querySelector('#empty-filters').content.querySelector('.catalog__empty-filter');
       var emptyFilter = blockEmptyFilter.cloneNode(true);
-      window.catalog.getCatalogCards.appendChild(emptyFilter);
+      window.catalog.cards.appendChild(emptyFilter);
     }
-    window.catalog.getRenderCatalog(arrayFilterGoods);
+    window.catalog.render(arrayFilterGoods);
   }
 
   // Функция - показать всё
   function generateShowAll(element) {
     element.addEventListener('click', function (evt) {
       evt.preventDefault();
-      window.catalog.getCleanCatalog();
+      window.catalog.clean();
       resetAllFilters();
       resetCheckbox();
       initSliderCoordinates();
       generateFilterCount();
-      window.catalog.getRenderCatalog(arrFilter);
+      window.catalog.render(arrFilter);
     });
   }
 
@@ -239,7 +239,7 @@
   }
 
   function getFunctionsForFilters(element) {
-    window.catalog.getCleanCatalog();
+    window.catalog.clean();
     resetAllFilters();
     resetCheckbox();
     element.checked = 'true';
@@ -300,7 +300,7 @@
             break;
         }
       }
-      window.catalog.getCleanCatalog();
+      window.catalog.clean();
       generateFilters();
     });
   }
@@ -332,7 +332,7 @@
             break;
         }
       }
-      window.catalog.getCleanCatalog();
+      window.catalog.clean();
       generateFilters();
     });
   }
@@ -455,14 +455,14 @@
         if (!window.catalog.getFavorites.length) {
           var blockEmptyFilter = document.querySelector('#empty-filters').content.querySelector('.catalog__empty-filter');
           var emptyFilter = blockEmptyFilter.cloneNode(true);
-          window.catalog.getCatalogCards.appendChild(emptyFilter);
+          window.catalog.cards.appendChild(emptyFilter);
         } else {
-          window.catalog.getRenderCatalog(window.catalog.getFavorites);
+          window.catalog.render(window.catalog.getFavorites);
         }
       } else {
-        window.catalog.getCleanCatalog();
+        window.catalog.clean();
         resetCheckbox();
-        window.catalog.getRenderCatalog(arrFilter);
+        window.catalog.render(arrFilter);
       }
     });
   }
@@ -475,11 +475,11 @@
         var arrFilterInStocks = arrFilter.filter(function (it) {
           return it.amount !== 0;
         });
-        window.catalog.getRenderCatalog(arrFilterInStocks);
+        window.catalog.render(arrFilterInStocks);
       } else {
-        window.catalog.getCleanCatalog();
+        window.catalog.clean();
         resetCheckbox();
-        window.catalog.getRenderCatalog(arrFilter);
+        window.catalog.render(arrFilter);
       }
     });
   }
@@ -505,7 +505,7 @@
       } else {
         arrFilterSort.sort = '';
       }
-      window.catalog.getCleanCatalog();
+      window.catalog.clean();
       generateFilters();
     });
   }
@@ -557,8 +557,8 @@
 
   window.filter = {
     getUpdateCatalog: updateCatalog,
-    getGenerateFilters: generateFilters,
-    getGenerateFilterCount: generateFilterCount
+    generate: generateFilters,
+    generateCount: generateFilterCount
   };
 
 })();

@@ -59,7 +59,7 @@
 
     arrFilter = goods.slice(0);
 
-    generateFilterCount();
+    generateCount();
     // Добавить событие по категориям товара
     generateFilterKind(filterForIceCream);
     generateFilterKind(filterSoda);
@@ -80,7 +80,7 @@
   }
 
   // Показать количество товара подходящими по фильтрацию
-  function generateFilterCount() {
+  function generateCount() {
     var filterCountIceCream = document.querySelector('label[for="filter-icecream"] + .input-btn__item-count');
     var filterCountSoda = document.querySelector('label[for="filter-soda"] + .input-btn__item-count');
     var filterCountGum = document.querySelector('label[for="filter-gum"] + .input-btn__item-count');
@@ -146,7 +146,7 @@
       }
     }
 
-    for (var j = 0; j < window.catalog.getFavorites.length; j++) {
+    for (var j = 0; j < window.catalog.favorites.length; j++) {
       countFavorite += 1;
     }
 
@@ -165,7 +165,7 @@
   }
 
   // Выводим товары по фильтрам
-  function generateFilters() {
+  function generate() {
     window.catalog.clean();
     var arrayFilterGoods = [];
     // Один раз проходим по массиву объектов продуктов
@@ -206,7 +206,7 @@
       resetAllFilters();
       resetCheckbox();
       initSliderCoordinates();
-      generateFilterCount();
+      generateCount();
       window.catalog.render(arrFilter);
     });
   }
@@ -244,7 +244,7 @@
     resetCheckbox();
     element.checked = 'true';
     initSliderCoordinates();
-    generateFilterCount();
+    generateCount();
   }
 
   function checkNutritionFacts(goodFact) {
@@ -301,7 +301,7 @@
         }
       }
       window.catalog.clean();
-      generateFilters();
+      generate();
     });
   }
 
@@ -333,7 +333,7 @@
         }
       }
       window.catalog.clean();
-      generateFilters();
+      generate();
     });
   }
 
@@ -377,8 +377,8 @@
       document.removeEventListener('mousemove', rangeMinMouseMoveHandler);
       document.removeEventListener('mouseup', rangeMinMouseUpHandler);
 
-      generateFilters();
-      generateFilterCount();
+      generate();
+      generateCount();
     }
 
     function getLeftSliderCoords(evt) {
@@ -417,8 +417,8 @@
       document.removeEventListener('mousemove', rangeMaxMouseMoveHandler);
       document.removeEventListener('mouseup', rangeMaxMouseUpHandler);
 
-      generateFilters();
-      generateFilterCount();
+      generate();
+      generateCount();
     }
 
     function getRightSliderCoords(evt) {
@@ -452,12 +452,12 @@
     element.addEventListener('click', function () {
       if (element.checked) {
         getFunctionsForFilters(element);
-        if (!window.catalog.getFavorites.length) {
+        if (!window.catalog.favorites.length) {
           var blockEmptyFilter = document.querySelector('#empty-filters').content.querySelector('.catalog__empty-filter');
           var emptyFilter = blockEmptyFilter.cloneNode(true);
           window.catalog.cards.appendChild(emptyFilter);
         } else {
-          window.catalog.render(window.catalog.getFavorites);
+          window.catalog.render(window.catalog.favorites);
         }
       } else {
         window.catalog.clean();
@@ -506,7 +506,7 @@
         arrFilterSort.sort = '';
       }
       window.catalog.clean();
-      generateFilters();
+      generate();
     });
   }
 
@@ -556,9 +556,9 @@
   }
 
   window.filter = {
-    getUpdateCatalog: updateCatalog,
-    generate: generateFilters,
-    generateCount: generateFilterCount
+    updateCatalog: updateCatalog,
+    generate: generate,
+    generateCount: generateCount
   };
 
 })();

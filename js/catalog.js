@@ -47,7 +47,7 @@
     catalogCards.removeChild(loadData);
 
     renderCatalog(arrayGoods);
-    window.filter.getUpdateCatalog(arrayGoods);
+    window.filter.updateCatalog(arrayGoods);
   }
 
   // Функция рендера товаров
@@ -71,10 +71,10 @@
 
     modalClose.addEventListener('click', function () {
       modalError.classList.add('modal--hidden');
-      document.removeEventListener('keydown', window.modal.keydownHandler);
+      document.removeEventListener('keydown', window.modal.keyDownHandler);
     });
 
-    document.addEventListener('keydown', window.modal.keydownHandler);
+    document.addEventListener('keydown', window.modal.keyDownHandler);
   }
 
   window.backend.load('GET', onCatalogLoadSuccessHandler, onCatalogLoadErrorHandler);
@@ -223,24 +223,24 @@
       goodsTotal.classList.add('visually-hidden');
     }
 
-    window.checkout.disableFormInputs(window.checkout.getContactData, !basketCards.length);
-    window.checkout.disableFormInputs(window.checkout.getPaymentCard, !basketCards.length);
-    window.checkout.disableFormInputs(window.checkout.getPaymentCash, !basketCards.length);
-    window.checkout.disableFormInputs(window.checkout.getDeliverStore, !basketCards.length);
-    window.checkout.disableFormInputs(window.checkout.getDeliverCourier, !basketCards.length);
+    window.checkout.disableFormInputs(window.checkout.contactData, !basketCards.length);
+    window.checkout.disableFormInputs(window.checkout.paymentCard, !basketCards.length);
+    window.checkout.disableFormInputs(window.checkout.paymentCash, !basketCards.length);
+    window.checkout.disableFormInputs(window.checkout.deliverStore, !basketCards.length);
+    window.checkout.disableFormInputs(window.checkout.deliverCourier, !basketCards.length);
     setBuyButtonState();
 
     if (basketCards.length && window.checkout.paymentMethod === 'payment__card') {
-      window.checkout.requireFormInputs(window.checkout.getPaymentCard, true);
+      window.checkout.requireFormInputs(window.checkout.paymentCard, true);
 
     } else if (basketCards.length && window.checkout.paymentMethod === 'payment__cash') {
-      window.checkout.requireFormInputs(window.checkout.getPaymentCash, true);
+      window.checkout.requireFormInputs(window.checkout.paymentCash, true);
 
     } else if (basketCards.length && window.checkout.deliverMethod === 'deliver__store') {
-      window.checkout.requireFormInputs(window.checkout.getDeliverStore, true);
+      window.checkout.requireFormInputs(window.checkout.deliverStore, true);
 
     } else if (basketCards.length && window.checkout.deliverMethod === 'deliver__courier') {
-      window.checkout.requireFormInputs(window.checkout.getDeliverCourier, true);
+      window.checkout.requireFormInputs(window.checkout.deliverCourier, true);
     }
 
     return basketCountOrder;
@@ -424,7 +424,7 @@
     goods: arrayGoods,
     clean: cleanCatalog,
     cards: catalogCards,
-    getFavorites: favorites
+    favorites: favorites
   };
 
 })();

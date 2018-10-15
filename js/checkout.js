@@ -35,13 +35,13 @@
       case 'payment__card':
         paymentCash.classList.add('visually-hidden');
         paymentCard.classList.remove('visually-hidden');
-        setDisabledInputs(paymentCash, true);
-        setRequiredInputs(paymentCard, true);
+        disableFormInputs(paymentCash, true);
+        requireFormInputs(paymentCard, true);
         break;
       case 'payment__cash':
         paymentCash.classList.remove('visually-hidden');
         paymentCard.classList.add('visually-hidden');
-        setDisabledInputs(paymentCard, true);
+        disableFormInputs(paymentCard, true);
         break;
     }
   }
@@ -59,20 +59,20 @@
       case 'deliver__store':
         deliverStore.classList.remove('visually-hidden');
         deliverCourier.classList.add('visually-hidden');
-        setDisabledInputs(deliverCourier, true);
-        setRequiredInputs(deliverStore, true);
+        disableFormInputs(deliverCourier, true);
+        requireFormInputs(deliverStore, true);
         break;
       case 'deliver__courier':
         deliverStore.classList.add('visually-hidden');
         deliverCourier.classList.remove('visually-hidden');
-        setDisabledInputs(deliverStore, true);
-        setRequiredInputs(deliverCourier, true);
+        disableFormInputs(deliverStore, true);
+        requireFormInputs(deliverCourier, true);
         break;
     }
   }
 
   // Деактивируем input у скрытых полей формы
-  function setDisabledInputs(el, bool) {
+  function disableFormInputs(el, bool) {
     var blockInputs = el.querySelectorAll('input');
 
     blockInputs.forEach(function (input, index) {
@@ -81,7 +81,7 @@
   }
 
   // Устанавливаем обязательные поля у выбранных вариантов доставки и оплаты
-  function setRequiredInputs(el, bool) {
+  function requireFormInputs(el, bool) {
     var blockInputs = el.querySelectorAll('input');
 
     if (bool) {
@@ -232,11 +232,11 @@
     modalClose.addEventListener('click', function () {
       modalSuccess.classList.add('modal--hidden');
     });
-    document.addEventListener('keydown', successModalKeydownHandler);
+    document.addEventListener('keydown', successKeyDownHandler);
 
-    function successModalKeydownHandler() {
+    function successKeyDownHandler() {
       modalSuccess.classList.add('modal--hidden');
-      document.removeEventListener('keydown', successModalKeydownHandler);
+      document.removeEventListener('keydown', successKeyDownHandler);
     }
   }
 
@@ -252,7 +252,7 @@
       modalError.classList.add('modal--hidden');
     });
 
-    document.addEventListener('keydown', window.modal.keydownHandler);
+    document.addEventListener('keydown', window.modal.keyDownHandler);
   }
 
   form.addEventListener('submit', function (evt) {
@@ -264,22 +264,22 @@
   });
 
   // Выставляем input-полям неактивных способов доставк и оплаты св-во disabled
-  setDisabledInputs(paymentCard, true);
-  setDisabledInputs(paymentCash, true);
-  setDisabledInputs(deliverStore, true);
-  setDisabledInputs(deliverCourier, true);
-  setDisabledInputs(contactData, true);
+  disableFormInputs(paymentCard, true);
+  disableFormInputs(paymentCash, true);
+  disableFormInputs(deliverStore, true);
+  disableFormInputs(deliverCourier, true);
+  disableFormInputs(contactData, true);
 
   window.checkout = {
     paymentMethod: selectedPaymentMethod,
     deliverMethod: selectedDeliverMethod,
-    getPaymentCard: paymentCard,
-    getPaymentCash: paymentCash,
-    getDeliverStore: deliverStore,
-    getDeliverCourier: deliverCourier,
-    getContactData: contactData,
-    disableFormInputs: setDisabledInputs,
-    requireFormInputs: setRequiredInputs
+    paymentCard: paymentCard,
+    paymentCash: paymentCash,
+    deliverStore: deliverStore,
+    deliverCourier: deliverCourier,
+    contactData: contactData,
+    disableFormInputs: disableFormInputs,
+    requireFormInputs: requireFormInputs
   };
 
 })();

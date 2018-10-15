@@ -3,15 +3,15 @@
 (function () {
   var modalError = document.querySelector('.modal--error');
 
-  function modalKeydownHandler(evt) {
+  function keyDownHandler(evt) {
     if (evt.keyCode === window.utils.ESC_KEYCODE) {
       modalError.classList.add('modal--hidden');
-      document.removeEventListener('keydown', modalKeydownHandler);
+      document.removeEventListener('keydown', keyDownHandler);
     }
   }
 
   window.modal = {
-    keydownHandler: modalKeydownHandler
+    keyDownHandler: keyDownHandler
   };
 
 })();

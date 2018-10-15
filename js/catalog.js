@@ -102,7 +102,7 @@
     starsRating.classList.remove('stars__rating--five');
 
     // Проставляем css-классы для рейтинга в зависимости от рейтинга товара
-    starsRating.classList.add(window.utils.ProductRating[good.rating.value]);
+    starsRating.classList.add(window.utils.ProductRating[good.rating.value + 1]);
 
     // Рейтинг
     starCount.textContent = good.rating.number;

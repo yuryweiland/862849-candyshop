@@ -143,7 +143,7 @@
   var contactDataTel = form.querySelector('#contact-data__tel');
   var paymentCardNumber = form.querySelector('#payment__card-number');
   var paymentCardDate = form.querySelector('#payment__card-date');
-  var paymentCardCVC = form.querySelector('#payment__card-cvc');
+  var paymentCardCvc = form.querySelector('#payment__card-cvc');
   var paymentCardholder = form.querySelector('#payment__cardholder');
   var paymentCardStatus = document.querySelector('.payment__card-status');
   var deliverStreet = form.querySelector('#deliver_street');
@@ -167,8 +167,8 @@
       case paymentCardDate:
         getCustomErrors(paymentCardDate, window.utils.MessageErrors.PAYMENT_CARD_DATE);
         break;
-      case paymentCardCVC:
-        getCustomErrors(paymentCardCVC, window.utils.MessageErrors.PAYMENT_CARD_CVC);
+      case paymentCardCvc:
+        getCustomErrors(paymentCardCvc, window.utils.MessageErrors.PAYMENT_CARD_CVC);
         break;
       case paymentCardholder:
         getCustomErrors(paymentCardholder, window.utils.MessageErrors.PAYMENT_CARD_HOLDER);
@@ -207,7 +207,7 @@
     if (paymentCardNumber.validity.valid &&
       checkPaymentCard(paymentCardNumber.value) &&
       paymentCardDate.validity.valid &&
-      paymentCardCVC.validity.valid &&
+      paymentCardCvc.validity.valid &&
       paymentCardholder.validity.valid) {
       paymentCardStatus.textContent = 'Одобрен';
     } else {

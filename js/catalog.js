@@ -2,7 +2,7 @@
 
 (function () {
   // Массив товаров
-  var arrayGoods = [];
+  var products = [];
 
   // Массив товаров в корзине
   var basketCards = [];
@@ -19,15 +19,15 @@
   var favorites = [];
 
   // Убираем у блока catalog__cards класс catalog__cards--load
-  var catalogCards = document.querySelector('.catalog__cards');
-  catalogCards.classList.remove('catalog__cards--load');
+  var cards = document.querySelector('.catalog__cards');
+  cards.classList.remove('catalog__cards--load');
 
   // Добавлением класса visually-hidden блок catalog__load
   var catalogLoad = document.querySelector('.catalog__load');
   catalogLoad.parentNode.removeChild(catalogLoad);
 
   var loadData = document.querySelector('#load-data').content.querySelector('.catalog__load');
-  catalogCards.appendChild(loadData);
+  cards.appendChild(loadData);
 
   // Находим шаблон, который будем копировать
   var goodElements = document.querySelector('#card').content.querySelector('.catalog__card');
@@ -41,22 +41,22 @@
 
   // Обработчик при успешной загрузке товаров с сервера
   function onCatalogLoadSuccessHandler(dataCards) {
-    arrayGoods = JSON.parse(dataCards);
+    products = JSON.parse(dataCards);
 
-    catalogCards.classList.remove('catalog__cards--load');
-    catalogCards.removeChild(loadData);
+    cards.classList.remove('catalog__cards--load');
+    cards.removeChild(loadData);
 
-    renderCatalog(arrayGoods);
-    window.filter.getUpdateCatalog(arrayGoods);
+    render(products);
+    window.filter.getUpdateCatalog(products);
   }
 
   // Функция рендера товаров
-  function renderCatalog(goods) {
+  function render(goods) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < goods.length; i++) {
       fragment.appendChild(renderGood(goods[i]));
     }
-    catalogCards.appendChild(fragment);
+    cards.appendChild(fragment);
   }
 
   // Обработчик при неудачной загрузке товаров с сервера (выкидываем модалку пользователю)
@@ -200,8 +200,8 @@
   function showGoods(callback, catalog) {
     var fragment = document.createDocumentFragment();
 
-    arrayGoods.forEach(function (good, index) {
-      fragment.appendChild(callback(arrayGoods[index]));
+    products.forEach(function (good, index) {
+      fragment.appendChild(callback(products[index]));
     });
 
     catalog.appendChild(fragment);
@@ -273,9 +273,9 @@
   }
 
   // Очищаю товары в каталоге перед следующим рендерингом
-  function cleanCatalog() {
-    while (catalogCards.firstChild) {
-      catalogCards.removeChild(catalogCards.firstChild);
+  function clean() {
+    while (cards.firstChild) {
+      cards.removeChild(cards.firstChild);
     }
   }
 
@@ -417,13 +417,13 @@
   document.body.append(loader);
 
   // Отображаем товары каталога при запуске
-  showGoods(renderGood, catalogCards);
+  showGoods(renderGood, cards);
 
   window.catalog = {
-    getRenderCatalog: renderCatalog,
-    getArrayGoods: arrayGoods,
-    getCleanCatalog: cleanCatalog,
-    getCatalogCards: catalogCards,
+    getRenderCatalog: render,
+    getProducts: products,
+    getCleanCatalog: clean,
+    getCatalogCards: cards,
     getFavorites: favorites
   };
 

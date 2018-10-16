@@ -200,18 +200,21 @@
   }
 
   paymentCardDate.addEventListener('keyup', inputKeyupHandler);
+
+  // Обновляем валидацию формы на лету (при нажатии кнопок и обновлению данных)
   form.addEventListener('keyup', dataValiditySubmitHandler);
+  form.addEventListener('change', dataValiditySubmitHandler);
 
   // Валидация формы
   function dataValiditySubmitHandler() {
-    if (paymentCardNumber.validity.valid &&
+  if (paymentCardNumber.validity.valid &&
       checkPaymentCard(paymentCardNumber.value) &&
       paymentCardDate.validity.valid &&
       paymentCardCvc.validity.valid &&
       paymentCardholder.validity.valid) {
-      paymentCardStatus.textContent = 'Одобрен';
+        paymentCardStatus.textContent = 'Одобрен';
     } else {
-      paymentCardStatus.textContent = 'Не определён';
+        paymentCardStatus.textContent = 'Не определён';
     }
   }
 

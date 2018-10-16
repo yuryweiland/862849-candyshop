@@ -182,7 +182,7 @@
   function isSugar(goodElement, good) {
     // Характеристики сахара и состав
     var cardCharacteristic = goodElement.querySelector('.card__characteristic');
-    cardCharacteristic.textContent = good.nutritionFacts.sugar === true ? 'Содержит сахар' : 'Без сахара';
+    cardCharacteristic.textContent = good.nutritionFacts.sugar ? 'Содержит сахар' : 'Без сахара';
   }
 
   function getAmountClass(good, goodElement) {

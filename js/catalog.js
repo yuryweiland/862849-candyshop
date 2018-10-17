@@ -151,7 +151,6 @@
           addGoodAmount(basketCards, goodCard);
         } else {
           goodCard.orderedAmount = 1;
-          delete goodCard.amount;
           basketCards.push(goodCard);
         }
 
@@ -296,6 +295,7 @@
   // Шаблонизируем товары в корзине
   function addElementsCard(good) {
     var cardElement = cardElements.cloneNode(true);
+    var cardOrderAmount = good.amount;
     var cardOrderTitle = cardElement.querySelector('.card-order__title');
     cardOrderTitle.textContent = good.name;
     var cardOrderImg = cardElement.querySelector('.card-order__img');
@@ -321,10 +321,12 @@
     }
 
     function increaseCardBasket() {
-      cardOrderCount.value = +cardOrderCount.value + 1;
-      // Обновляем количество и сумму товаров в корзине
-      goodsTotalPrice = goodsTotalPrice + (parseInt(cardOrderPrice.innerHTML, 10));
-      updateCardWidgetText(goodsTotalPrice);
+      if (+cardOrderCount.value < cardOrderAmount) {
+        cardOrderCount.value = +cardOrderCount.value + 1;
+        // Обновляем количество и сумму товаров в корзине
+        goodsTotalPrice = goodsTotalPrice + (parseInt(cardOrderPrice.innerHTML, 10));
+        updateCardWidgetText(goodsTotalPrice);
+      }
     }
 
     //  Функция удаления товара в магазине

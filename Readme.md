@@ -1,8 +1,5 @@
 # Личный проект «Кэндишоп» [![Build status][travis-image]][travis-url]
 
-* Студент: [Юрий Вайланд](https://up.htmlacademy.ru/javascript/15/user/862849).
-* Наставник: [Дмитрий Мирошниченко](https://htmlacademy.ru/profile/id591417).
-
 ---
 
 _Не удаляйте и не обращайте внимание на файлы:_<br>

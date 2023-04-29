@@ -11,7 +11,7 @@
     "url": "https://github.com/htmlacademy-javascript/862849-candyshop/issues"
   },
   "devDependencies": {
-    "eslint": "4.19.1",
+    "eslint": "8.39.0",
     "eslint-config-htmlacademy": "0.5.2"
   },
   "license": "MIT",
